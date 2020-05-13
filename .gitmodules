@@ -2,3 +2,7 @@
 	path = moodle/mod/customcert
 	url = https://github.com/markn86/moodle-mod_customcert.git
 	branch = MOODLE_38_STABLE
+[submodule "moodle/local/mailtest"]
+	path = moodle/local/mailtest
+	url = https://github.com/michael-milette/moodle-local_mailtest.git
+	branch = master
