@@ -9,7 +9,6 @@ cd moodle
 ```
 
 - https://github.com/markn86/moodle-mod_customcert
-Use of subplugins.php has been deprecated. Please update your '/var/www/html/moodle38/mod/customcert' 
 ```bash
 git submodule add -b MOODLE_38_STABLE https://github.com/markn86/moodle-mod_customcert.git mod/customcert
 ```
