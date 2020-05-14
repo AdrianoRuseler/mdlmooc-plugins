@@ -41,6 +41,11 @@ git submodule add -b master https://github.com/FMCorz/moodle-block_xp.git blocks
 ```bash
 git submodule add -b master https://github.com/deraadt/moodle-block_completion_progress.git blocks/completion_progress
 ```
+- https://github.com/ndunand/moodle-mod_choicegroup
+```bash
+git submodule add -b master https://github.com/ndunand/moodle-mod_choicegroup.git mod/choicegroup
+```
+
 
 ## Themes List
 
