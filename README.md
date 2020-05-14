@@ -37,7 +37,10 @@ git submodule add -b v2.3-stable https://github.com/blindsidenetworks/moodle-mod
 ```bash
 git submodule add -b master https://github.com/FMCorz/moodle-block_xp.git blocks/xp
 ```
-
+- https://github.com/deraadt/moodle-block_completion_progress
+```bash
+git submodule add -b master https://github.com/deraadt/moodle-block_completion_progress.git blocks/completion_progress
+```
 
 ## Themes List
 
