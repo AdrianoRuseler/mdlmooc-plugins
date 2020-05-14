@@ -45,6 +45,10 @@ git submodule add -b master https://github.com/deraadt/moodle-block_completion_p
 ```bash
 git submodule add -b master https://github.com/ndunand/moodle-mod_choicegroup.git mod/choicegroup
 ```
+- https://github.com/dthies/moodle-atto_fullscreen
+```bash
+git submodule add -b master https://github.com/dthies/moodle-atto_fullscreen.git lib/editor/atto/plugins/fullscreen
+```
 
 
 ## Themes List
