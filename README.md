@@ -29,6 +29,10 @@ git submodule add -b stable https://github.com/h5p/h5p-moodle-plugin.git mod/hvp
 cd mod/hvp
 git submodule update --init
 ```
+- https://github.com/blindsidenetworks/moodle-mod_bigbluebuttonbn
+```bash
+git submodule add -b v2.3-stable https://github.com/blindsidenetworks/moodle-mod_bigbluebuttonbn.git mod/bigbluebuttonbn
+```
 
 
 ## Themes List
