@@ -50,6 +50,12 @@ git submodule add -b master https://github.com/ndunand/moodle-mod_choicegroup.gi
 git submodule add -b master https://github.com/dthies/moodle-atto_fullscreen.git lib/editor/atto/plugins/fullscreen
 ```
 
+- https://github.com/frankkoch/moodle-mod_studentquiz
+```bash
+git submodule add -b master https://github.com/frankkoch/moodle-mod_studentquiz.git mod/studentquiz
+```
+
+
 
 ## Themes List
 
