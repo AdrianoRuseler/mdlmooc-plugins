@@ -14,3 +14,7 @@
 	path = moodle/theme/adaptable
 	url = https://gitlab.com/jezhops/moodle-theme_adaptable.git
 	branch = master
+[submodule "moodle/theme/fordson"]
+	path = moodle/theme/fordson
+	url = https://github.com/dbnschools/moodle-theme_fordson.git
+	branch = master
