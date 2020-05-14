@@ -10,3 +10,7 @@
 	path = moodle/theme/moove
 	url = https://github.com/willianmano/moodle-theme_moove.git
 	branch = master
+[submodule "moodle/theme/adaptable"]
+	path = moodle/theme/adaptable
+	url = https://gitlab.com/jezhops/moodle-theme_adaptable.git
+	branch = master
