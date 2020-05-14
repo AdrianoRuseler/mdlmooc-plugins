@@ -18,3 +18,7 @@
 	path = moodle/theme/fordson
 	url = https://github.com/dbnschools/moodle-theme_fordson.git
 	branch = master
+[submodule "moodle/mod/attendance"]
+	path = moodle/mod/attendance
+	url = https://github.com/danmarsden/moodle-mod_attendance.git
+	branch = master
