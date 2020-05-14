@@ -55,7 +55,10 @@ git submodule add -b master https://github.com/dthies/moodle-atto_fullscreen.git
 git submodule add -b master https://github.com/frankkoch/moodle-mod_studentquiz.git mod/studentquiz
 ```
 
-
+- https://github.com/tmuras/moosh
+```bash
+git submodule add -b master https://github.com/tmuras/moosh.git local/moosh
+```
 
 ## Themes List
 
