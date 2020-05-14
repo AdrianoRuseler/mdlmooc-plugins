@@ -33,6 +33,10 @@ git submodule update --init
 ```bash
 git submodule add -b v2.3-stable https://github.com/blindsidenetworks/moodle-mod_bigbluebuttonbn.git mod/bigbluebuttonbn
 ```
+- https://github.com/FMCorz/moodle-block_xp
+```bash
+git submodule add -b master https://github.com/FMCorz/moodle-block_xp.git blocks/xp
+```
 
 
 ## Themes List
