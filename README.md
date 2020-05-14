@@ -21,4 +21,14 @@ git submodule add -b master https://github.com/michael-milette/moodle-local_mail
 ```
 
 
+## Themes List
+
+- https://github.com/willianmano/moodle-theme_moove
+```bash
+git submodule add -b master https://github.com/willianmano/moodle-theme_moove.git theme/moove
+```
+
+
+
+
 
