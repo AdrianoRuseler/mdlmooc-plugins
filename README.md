@@ -20,6 +20,11 @@ git submodule add -b MOODLE_38_STABLE https://github.com/markn86/moodle-mod_cust
 git submodule add -b master https://github.com/michael-milette/moodle-local_mailtest.git local/mailtest
 ```
 
+- https://github.com/danmarsden/moodle-mod_attendance/
+```bash
+git submodule add -b master https://github.com/danmarsden/moodle-mod_attendance.git mod/attendance
+```
+
 
 ## Themes List
 
