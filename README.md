@@ -34,6 +34,8 @@ git submodule add -b master https://github.com/willianmano/moodle-theme_moove.gi
 git submodule add -b master https://gitlab.com/jezhops/moodle-theme_adaptable.git theme/adaptable
 ```
 
-
-
+- https://github.com/dbnschools/moodle-theme_fordson
+```bash
+git submodule add -b master https://github.com/dbnschools/moodle-theme_fordson.git theme/fordson
+```
 
