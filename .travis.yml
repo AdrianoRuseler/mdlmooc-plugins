@@ -44,20 +44,22 @@ matrix:
 #    - php: 7.3
 #      env: PLUGIN_DIR=moodle/mod/hvp
       
-    - php: 7.3
-      env: PLUGIN_DIR=moodle/blocks/xp
-    - php: 7.3
-      env: PLUGIN_DIR=moodle/mod/customcert
- #   - php: 7.3
- #     env: PLUGIN_DIR=moodle/enrol/auto
+#    - php: 7.4
+#      env: PLUGIN_DIR=moodle/blocks/xp
+#    - php: 7.4
+#      env: PLUGIN_DIR=moodle/mod/customcert
 
-    - php: 7.3
+#    - php: 7.4
+#      env: PLUGIN_DIR=moodle/mod/choicegroup
+#    - php: 7.4
+#      env: PLUGIN_DIR=moodle/mod/studentquiz
+
+    - php: 7.4
       env: PLUGIN_DIR=moodle/theme/adaptable
-    - php: 7.3
-      env: PLUGIN_DIR=moodle/mod/choicegroup
-
-    - php: 7.3
-      env: PLUGIN_DIR=moodle/mod/studentquiz
+    - php: 7.4
+      env: PLUGIN_DIR=moodle/theme/moove
+    - php: 7.4
+      env: PLUGIN_DIR=moodle/theme/fordson
       
 before_install:
   - phpenv config-rm xdebug.ini
