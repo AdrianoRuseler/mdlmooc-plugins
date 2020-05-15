@@ -38,8 +38,8 @@ matrix:
 #      env: PLUGIN_DIR=moodle/lib/editor/atto/plugins/fullscreen
 #    - php: 7.3
 #      env: PLUGIN_DIR=moodle/blocks/completion_progress
-#    - php: 7.3
-#      env: PLUGIN_DIR=moodle/mod/attendance
+    - php: 7.4
+      env: PLUGIN_DIR=moodle/mod/attendance
 
 #    - php: 7.3
 #      env: PLUGIN_DIR=moodle/mod/hvp
@@ -54,12 +54,12 @@ matrix:
 #    - php: 7.4
 #      env: PLUGIN_DIR=moodle/mod/studentquiz
 
-    - php: 7.4
-      env: PLUGIN_DIR=moodle/theme/adaptable
-    - php: 7.4
-      env: PLUGIN_DIR=moodle/theme/moove
-    - php: 7.4
-      env: PLUGIN_DIR=moodle/theme/fordson
+#    - php: 7.4
+#      env: PLUGIN_DIR=moodle/theme/adaptable
+#    - php: 7.4
+#      env: PLUGIN_DIR=moodle/theme/moove
+#    - php: 7.4
+#      env: PLUGIN_DIR=moodle/theme/fordson
       
 before_install:
   - phpenv config-rm xdebug.ini
