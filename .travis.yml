@@ -66,8 +66,8 @@ before_install:
   - mv $PLUGIN_DIR/* .
   - rm -rf moodle
   - cd ../..
-  - nvm install 8.9;
-    nvm use 8.9;
+  - nvm install 14;
+    nvm use 14;
     composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^2;
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
   - PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//') JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
