@@ -46,10 +46,6 @@
 	path = moodle/lib/editor/atto/plugins/fullscreen
 	url = https://github.com/dthies/moodle-atto_fullscreen.git
 	branch = master
-[submodule "moodle/mod/studentquiz"]
-	path = moodle/mod/studentquiz
-	url = https://github.com/frankkoch/moodle-mod_studentquiz.git
-	branch = master
 [submodule "moodle/local/moosh"]
 	path = moodle/local/moosh
 	url = https://github.com/tmuras/moosh.git
