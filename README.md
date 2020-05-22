@@ -60,6 +60,14 @@ git submodule add -b master https://github.com/frankkoch/moodle-mod_studentquiz.
 git submodule add -b master https://github.com/tmuras/moosh.git local/moosh
 ```
 
+- https://github.com/tmuras/moosh
+```bash
+git submodule add -b master https://github.com/mikasmart/moodle-report_benchmark.git report/benchmark
+```
+
+
+
+
 ## Themes List
 
 - https://github.com/willianmano/moodle-theme_moove
