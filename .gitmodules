@@ -58,3 +58,7 @@
 	path = moodle/local/aws
 	url = https://github.com/catalyst/moodle-local_aws.git
 	branch = master
+[submodule "moodle/admin/tool/objectfs"]
+	path = moodle/admin/tool/objectfs
+	url = https://github.com/catalyst/moodle-tool_objectfs.git
+	branch = master
