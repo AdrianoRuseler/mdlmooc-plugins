@@ -54,3 +54,7 @@
 	path = moodle/mod/scheduler
 	url = https://github.com/bostelm/moodle-mod_scheduler.git
 	branch = master
+[submodule "moodle/report/coursesize"]
+	path = moodle/report/coursesize
+	url = https://github.com/catalyst/moodle-report_coursesize.git
+	branch = master
