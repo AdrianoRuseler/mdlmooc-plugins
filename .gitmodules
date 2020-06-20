@@ -46,7 +46,3 @@
 	path = moodle/report/benchmark
 	url = https://github.com/mikasmart/moodle-report_benchmark.git
 	branch = master
-[submodule "moodle/admin/tool/objectfs"]
-	path = moodle/admin/tool/objectfs
-	url = https://github.com/catalyst/moodle-tool_objectfs.git
-	branch = master
