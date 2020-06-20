@@ -58,3 +58,7 @@
 	path = moodle/report/coursesize
 	url = https://github.com/catalyst/moodle-report_coursesize.git
 	branch = master
+[submodule "moodle/mod/checklist"]
+	path = moodle/mod/checklist
+	url = https://github.com/davosmith/moodle-checklist.git
+	branch = master
