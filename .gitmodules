@@ -46,3 +46,7 @@
 	path = moodle/report/benchmark
 	url = https://github.com/mikasmart/moodle-report_benchmark.git
 	branch = master
+[submodule "moodle/mod/booking"]
+	path = moodle/mod/booking
+	url = https://github.com/dasistwas/moodle-mod_booking.git
+	branch = master
