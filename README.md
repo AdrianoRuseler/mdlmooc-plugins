@@ -23,12 +23,6 @@ git submodule add -b master https://github.com/michael-milette/moodle-local_mail
 git submodule add -b master https://github.com/danmarsden/moodle-mod_attendance.git mod/attendance
 ```
 
-- https://github.com/h5p/h5p-moodle-plugin
-```bash
-git submodule add -b stable https://github.com/h5p/h5p-moodle-plugin.git mod/hvp
-cd mod/hvp
-git submodule update --init
-```
 - https://github.com/blindsidenetworks/moodle-mod_bigbluebuttonbn
 ```bash
 git submodule add -b v2.3-stable https://github.com/blindsidenetworks/moodle-mod_bigbluebuttonbn.git mod/bigbluebuttonbn
