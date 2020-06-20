@@ -42,10 +42,6 @@
 	path = moodle/lib/editor/atto/plugins/fullscreen
 	url = https://github.com/dthies/moodle-atto_fullscreen.git
 	branch = master
-[submodule "moodle/local/moosh"]
-	path = moodle/local/moosh
-	url = https://github.com/tmuras/moosh.git
-	branch = master
 [submodule "moodle/report/benchmark"]
 	path = moodle/report/benchmark
 	url = https://github.com/mikasmart/moodle-report_benchmark.git
