@@ -50,3 +50,7 @@
 	path = moodle/mod/booking
 	url = https://github.com/dasistwas/moodle-mod_booking.git
 	branch = master
+[submodule "moodle/mod/scheduler"]
+	path = moodle/mod/scheduler
+	url = https://github.com/bostelm/moodle-mod_scheduler.git
+	branch = master
