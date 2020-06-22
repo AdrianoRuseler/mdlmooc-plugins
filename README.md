@@ -13,11 +13,6 @@ cd moodle
 git submodule add -b MOODLE_38_STABLE https://github.com/markn86/moodle-mod_customcert.git mod/customcert
 ```
 
-- https://github.com/michael-milette/moodle-local_mailtest
-```bash
-git submodule add -b master https://github.com/michael-milette/moodle-local_mailtest.git local/mailtest
-```
-
 - https://github.com/danmarsden/moodle-mod_attendance/
 ```bash
 git submodule add -b master https://github.com/danmarsden/moodle-mod_attendance.git mod/attendance
@@ -92,9 +87,14 @@ git submodule add -b v3.8 https://github.com/lmsace/klass.git theme/klass
 git submodule add -b v3.8 https://github.com/lmsace/eguru.git theme/eguru
 ```
 
+## Removed
 
+- https://github.com/michael-milette/moodle-local_mailtest
+```bash
+git submodule add -b master https://github.com/michael-milette/moodle-local_mailtest.git local/mailtest
+```
 
--https://github.com/trema-tech/moodle-theme_trema
+- https://github.com/trema-tech/moodle-theme_trema
 
 ```bash
 git submodule add -b MOODLE_38_STABLE https://github.com/trema-tech/moodle-theme_trema.git theme/trema
