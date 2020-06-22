@@ -80,4 +80,8 @@ git submodule add -b master https://github.com/dbnschools/moodle-theme_fordson.g
 git submodule add -b v3.8 https://github.com/lmsace/academi.git theme/academi
 ```
 
+- https://github.com/lmsace/klass
 
+```bash
+git submodule add -b v3.8 https://github.com/lmsace/klass.git theme/klass
+```

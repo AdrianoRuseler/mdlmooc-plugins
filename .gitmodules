@@ -66,3 +66,7 @@
 	path = moodle/theme/academi
 	url = https://github.com/lmsace/academi.git
 	branch = v3.8
+[submodule "moodle/theme/klass"]
+	path = moodle/theme/klass
+	url = https://github.com/lmsace/klass.git
+	branch = v3.8
