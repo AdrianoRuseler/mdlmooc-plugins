@@ -70,3 +70,7 @@
 	path = moodle/theme/klass
 	url = https://github.com/lmsace/klass.git
 	branch = v3.8
+[submodule "moodle/theme/trema"]
+	path = moodle/theme/trema
+	url = https://github.com/trema-tech/moodle-theme_trema.git
+	branch = MOODLE_38_STABLE

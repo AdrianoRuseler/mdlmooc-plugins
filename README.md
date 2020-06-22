@@ -85,3 +85,9 @@ git submodule add -b v3.8 https://github.com/lmsace/academi.git theme/academi
 ```bash
 git submodule add -b v3.8 https://github.com/lmsace/klass.git theme/klass
 ```
+
+-https://github.com/trema-tech/moodle-theme_trema
+
+```bash
+git submodule add -b MOODLE_38_STABLE https://github.com/trema-tech/moodle-theme_trema.git theme/trema
+```
