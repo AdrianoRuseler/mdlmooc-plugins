@@ -75,3 +75,9 @@ git submodule add -b master https://gitlab.com/jezhops/moodle-theme_adaptable.gi
 git submodule add -b master https://github.com/dbnschools/moodle-theme_fordson.git theme/fordson
 ```
 
+- https://github.com/lmsace/academi 
+```bash
+git submodule add -b v3.8 https://github.com/lmsace/academi.git theme/academi
+```
+
+
