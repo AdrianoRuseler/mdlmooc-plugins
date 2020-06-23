@@ -14,10 +14,6 @@
 	path = moodle/theme/fordson
 	url = https://github.com/dbnschools/moodle-theme_fordson.git
 	branch = master
-[submodule "moodle/mod/attendance"]
-	path = moodle/mod/attendance
-	url = https://github.com/danmarsden/moodle-mod_attendance.git
-	branch = master
 [submodule "moodle/mod/bigbluebuttonbn"]
 	path = moodle/mod/bigbluebuttonbn
 	url = https://github.com/blindsidenetworks/moodle-mod_bigbluebuttonbn.git
