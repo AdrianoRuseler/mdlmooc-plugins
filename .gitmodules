@@ -58,3 +58,7 @@
 	path = moodle/theme/eguru
 	url = https://github.com/lmsace/eguru.git
 	branch = v3.8
+[submodule "moodle/mod/attendance"]
+	path = moodle/mod/attendance
+	url = https://github.com/danmarsden/moodle-mod_attendance.git
+	branch = main
