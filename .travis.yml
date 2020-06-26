@@ -1,6 +1,7 @@
 language: php
 
-dist: bionic
+# dist: bionic
+dist: focal
 
 addons:
   postgresql: "12"
