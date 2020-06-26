@@ -3,7 +3,7 @@ language: php
 dist: bionic
 
 addons:
-  postgresql: "9.6"
+  postgresql: "12"
   #hosts:
   #  - moodle.test
  # firefox: stable
@@ -27,7 +27,7 @@ env:
     - IGNORE_NAMES=*.txt,*.md
     - MUSTACHE_IGNORE_NAMES=mobile_teacher_form.mustache
     
-    - MOODLE_BRANCH=MOODLE_38_STABLE
+    - MOODLE_BRANCH=MOODLE_39_STABLE
     - DB=pgsql
 # Alternate tests with MySQL and PostgreSQL
 matrix:
