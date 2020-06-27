@@ -4,8 +4,11 @@ language: php
 dist: focal
 
 addons:
-  postgresql: "12"
-  #hosts:
+  postgresql: '12'
+  apt:
+     packages:
+        - postgresql-12
+        - postgresql-client-12
   #  - moodle.test
  # firefox: stable
   chrome: stable
