@@ -3,7 +3,9 @@ $defaults['moodle']['summary'] = 'Moodle Test Site! '; // for core settings
 $defaults['moodle']['noreplyaddress'] = 'moodletestutfpr@gmail.com';
 $defaults['moodle']['custommenuitems'] = 'Tema
 -Clean | https://mytesturl/?theme=clean
--Boost | https://mytesturl/?theme=boost';
+-Boost | https://mytesturl/?theme=boost
+Solicitação de curso | https://mytesturl/course/request.php
+';
 
 $defaults['moodle']['timezone'] = 'America/Sao_Paulo';
 $defaults['moodle']['defaultcity'] = 'Curitiba';
