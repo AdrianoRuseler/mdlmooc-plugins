@@ -1,7 +1,5 @@
 # mdlmooc-plugins
 Moodle MOOC Plugins
-[![Build Status](https://travis-ci.org/AdrianoRuseler/mdlmooc-plugins.svg?branch=master)](https://travis-ci.org/AdrianoRuseler/mdlmooc-plugins)
-
 ## Plugins List
 
 ```bash
