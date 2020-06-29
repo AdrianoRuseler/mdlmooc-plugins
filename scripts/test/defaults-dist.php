@@ -1,9 +1,15 @@
 <?php
 $defaults['moodle']['summary'] = 'Moodle Test Site! '; // for core settings
-$defaults['moodle']['noreplyaddress'] = 'moodletestutfpr@gmail.com';
+$defaults['moodle']['noreplyaddress'] = 'sophia-mailer@mail.ct.utfpr.edu.br';
 $defaults['moodle']['custommenuitems'] = 'Tema
--Clean | https://mytesturl/?theme=clean
+-Academi | https://mytesturl/?theme=academi
+-Adaptable | https://mytesturl/?theme=adaptable
 -Boost | https://mytesturl/?theme=boost
+-Clássico | https://mytesturl/?theme=classic
+-Eguru | https://mytesturl/?theme=eguru
+-Fordson | https://mytesturl/?theme=fordson
+-Klass | https://mytesturl/?theme=klass
+-Moove | https://mytesturl/?theme=moove
 Solicitação de curso | https://mytesturl/course/request.php
 ';
 

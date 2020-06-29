@@ -21,6 +21,8 @@ $CFG->wwwroot   = 'mytesturl';
 $CFG->dataroot  = '/mnt/mdl/data';
 $CFG->admin     = 'admin';
 
+$CFG->allowthemechangeonurl = true;
+
 $CFG->directorypermissions = 0777;
 
 require_once(__DIR__ . '/lib/setup.php');
