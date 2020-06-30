@@ -75,18 +75,16 @@ moosh -n forum-newdiscussion --subject "PHP Info" --message "<pre>$phpinfo</pre>
  
 moodlerootinfo1=$(ls -lh)
 moodlerootinfo2=$(du -h --max-depth=1)
- 
-moosh -n forum-newdiscussion --subject "Moodle root info" --message "<pre>$moodlerootinfo1</pre><hr><pre>$moodlerootinfo2</pre>" $courseid $forumid $userid 
 
-moodledatainfo1=$(ls -lh $BKP_DIR)
-moodledatainfo2=$(du -h --max-depth=1 $BKP_DIR)
+moodledatainfo3=$(ls -lh $MOODLE_DATA)
+moodledatainfo4=$(du -h --max-depth=1 $MOODLE_DATA)
 
-moosh -n forum-newdiscussion --subject "Moodle Backup info" --message "<pre>$moodledatainfo1</pre><hr><pre>$moodledatainfo2</pre>" $courseid $forumid $userid 
+moosh -n forum-newdiscussion --subject "Moodle root/data info" --message "<pre>$moodlerootinfo1</pre><hr><pre>$moodlerootinfo2</pre><hr><pre>$moodlerootinfo3</pre><hr><pre>$moodlerootinfo4</pre>" $courseid $forumid $userid 
 
-moodledatainfo1=$(ls -lh $MOODLE_DATA)
-moodledatainfo2=$(du -h --max-depth=1 $MOODLE_DATA)
+moodlebkpinfo1=$(ls -lh $BKP_DIR)
+moodlebkpinfo2=$(du -h --max-depth=1 $BKP_DIR)
 
-moosh -n forum-newdiscussion --subject "Moodle data info" --message "<pre>$moodledatainfo1</pre><hr><pre>$moodledatainfo2</pre>" $courseid $forumid $userid 
+moosh -n forum-newdiscussion --subject "Moodle Backup info" --message "<hr><pre>$moodlebkpinfo1</pre><hr><pre>$moodlebkpinfo2</pre>" $courseid $forumid $userid 
  
 sysinfo=$(uname -a) # Gets system info
 diskinfo=$(df -H) # Gets disk usage info 
@@ -94,4 +92,13 @@ httpdver=$(apachectl -V)
 mysqlver=$(psql -V)
 phpversion=$(php -v)
 
-moosh -n forum-newdiscussion --subject "System info" --message "<pre>$sysinfo</pre><hr><br><pre>$diskinfo</pre><hr><br><pre>$httpdver</pre><hr><br><pre>$mysqlver</pre><hr><br><pre>$phpversion</pre>" $courseid $forumid $userid
+moosh -n forum-newdiscussion --subject "System info" --message "<hr><pre>$sysinfo</pre><hr><br><pre>$diskinfo</pre><hr><br><pre>$httpdver</pre><hr><br><pre>$mysqlver</pre><hr><br><pre>$phpversion</pre>" $courseid $forumid $userid
+
+
+# List of scheduled tasks 
+# admin/tool/task/cli/schedule_task.php --list
+sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --list >> /tmp/scheduletasklist.txt
+
+scheduletasklist=$(cat /tmp/scheduletasklist.txt)
+moosh -n forum-newdiscussion --subject "List of scheduled tasks" --message "<h5>List of scheduled tasks</h5><pre>$scheduletasklist</pre>" $courseid $forumid $userid
+
