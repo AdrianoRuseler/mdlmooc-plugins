@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # cat /var/log/cloud-init-output.log
+echo "#1 - Initial system setup"
 export DEBIAN_FRONTEND=noninteractive
 apt update && apt upgrade -yq
 
@@ -41,6 +42,8 @@ rm -rf awscliv2.zip
 sudo ./aws/install
 aws --version
 
+echo "#2 - Web server and dependencies setup"
+
 # Set web server (apache)
 PUBHOST=$(ec2metadata --public-hostname | cut -d : -f 2 | tr -d " ")
 
@@ -48,6 +51,7 @@ PUBHOST=$(ec2metadata --public-hostname | cut -d : -f 2 | tr -d " ")
 apt install -y apache2
 a2enmod ssl rewrite headers deflate socache_shmcb
 systemctl restart apache2
+systemctl status apache2
 
 #Create directory structure
 mkdir -p /var/www/moodle/{html,local,cache,temp,git}
@@ -125,7 +129,7 @@ sudo -i -u postgres /usr/lib/postgresql/12/bin/pg_ctl -D /mnt/mdl/db/data initdb
 PGPASS='M00dle#2k20'
 
 systemctl start postgresql
-# psql --version
+psql --version
 sudo -i -u postgres psql -c "CREATE DATABASE mdldb;"
 sudo -i -u postgres psql -c "CREATE USER moodle WITH PASSWORD 'M00dle#2k20';" # How to use PGPASS here?
 sudo -i -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mdldb TO moodle;"
@@ -140,6 +144,7 @@ apt install -y aspell dictionaries-common libaspell15 aspell-de aspell-es aspell
 echo "To be able to generate graphics from DOT files, you must have installed the dot executable..."
 apt install -y graphviz imagemagick
 
+echo "#3 - Install moodle"
 
 # Clone git repository
 cd /var/www/moodle/git

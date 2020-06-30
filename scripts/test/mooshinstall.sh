@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "#3 - Install Moosh"
 cd /var/www/moodle/git
 # https://getcomposer.org/doc/faqs/how-to-install-composer-programmatically.md
 echo "Install Composer programmatically"
@@ -36,3 +37,18 @@ userid=$(moosh -n user-create --password M00sh#2k20 --email moosh@fake.mail --ci
 courseid=$(moosh -n course-create --category 1 --fullname "Moosh Reports" --description "Moosh command line reports" --idnumber "mooshreports" "Moosh Reports")
 moosh -n course-enrol -r teacher -i $courseid $userid
 
+sectionid=0 # 
+
+forumid=$(moosh -n activity-add --name "Moodle $mdlrelease - Report at $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
+
+
+sed -n "/Cloud-init.*/, /#1.*/ p"  /var/log/cloud-init-output.log >> /tmp/log01.log
+sed -n "/#1.*/, /#2.*/ p"  /var/log/cloud-init-output.log >> /tmp/log02.log
+sed -n "/#2.*/, /#3.*/ p"  /var/log/cloud-init-output.log >> /tmp/log03.log
+sed -n "/#3.*/, /#4.*/ p"  /var/log/cloud-init-output.log >> /tmp/log04.log
+sed -n "/#4.*/, /Cloud-init.*/ p"  /var/log/cloud-init-output.log >> /tmp/log05.log
+
+
+cloudlog1=$(cat /tmp/log01.log) # Split this
+
+moosh -n forum-newdiscussion --subject "Installation Report - cloud-init-output.log" --message "<pre>$cloudlog1</pre>" $courseid $forumid $userid
