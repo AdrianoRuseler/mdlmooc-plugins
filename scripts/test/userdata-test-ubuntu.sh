@@ -185,7 +185,7 @@ mv composer.phar /usr/local/bin/composer
 chmod +x /usr/local/bin/composer
 composer --version
 
-# Install moosh
+# Install moosh - https://moosh-online.com/
 git clone git://github.com/tmuras/moosh.git
 cd moosh
 composer install
