@@ -37,11 +37,12 @@ userid=$(moosh -n user-create --password M00sh#2k20 --email moosh@fake.mail --ci
 courseid=$(moosh -n course-create --category 1 --fullname "Moosh Reports" --description "Moosh command line reports" --idnumber "mooshreports" "Moosh Reports")
 moosh -n course-enrol -r teacher -i $courseid $userid
 
-sectionid=0 # 
+sectionid=0 # Set section number
 
-forumid=$(moosh -n activity-add --name "Moodle $mdlrelease - Report at $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
+mdlrelease=$(moosh -n config-get core release)
+forumid=$(moosh -n activity-add --name "Reports from cloud-init-output.log" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
 
-
+# Generates split logs files
 sed -n "/Cloud-init.*/, /#1.*/ p"  /var/log/cloud-init-output.log >> /tmp/log01.log
 sed -n "/#1.*/, /#2.*/ p"  /var/log/cloud-init-output.log >> /tmp/log02.log
 sed -n "/#2.*/, /#3.*/ p"  /var/log/cloud-init-output.log >> /tmp/log03.log
@@ -49,6 +50,18 @@ sed -n "/#3.*/, /#4.*/ p"  /var/log/cloud-init-output.log >> /tmp/log04.log
 sed -n "/#4.*/, /Cloud-init.*/ p"  /var/log/cloud-init-output.log >> /tmp/log05.log
 
 
-cloudlog1=$(cat /tmp/log01.log) # Split this
+cloudlog1=$(cat /tmp/log01.log) # Reads file content
+moosh -n forum-newdiscussion --subject "Initial Cloud-init setup" --message "<pre>$cloudlog1</pre>" $courseid $forumid $userid
 
-moosh -n forum-newdiscussion --subject "Installation Report - cloud-init-output.log" --message "<pre>$cloudlog1</pre>" $courseid $forumid $userid
+cloudlog2=$(cat /tmp/log02.log) # Reads file content
+moosh -n forum-newdiscussion --subject "Initial system setup and update" --message "<pre>$cloudlog2</pre>" $courseid $forumid $userid
+
+cloudlog3=$(cat /tmp/log03.log) # Reads file content
+moosh -n forum-newdiscussion --subject "Web server and dependencies setup" --message "<pre>$cloudlog3</pre>" $courseid $forumid $userid
+
+cloudlog4=$(cat /tmp/log04.log) # Reads file content
+moosh -n forum-newdiscussion --subject "Install Moodle" --message "<pre>$cloudlog4</pre>" $courseid $forumid $userid
+
+cloudlog5=$(cat /tmp/log05.log) # Reads file content
+moosh -n forum-newdiscussion --subject "Install Moosh" --message "<pre>$cloudlog5</pre>" $courseid $forumid $userid
+
