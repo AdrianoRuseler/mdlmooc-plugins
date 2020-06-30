@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "#3 - Install Moosh"
+echo "#5 - Install Moosh"
 cd /var/www/moodle/git
 # https://getcomposer.org/doc/faqs/how-to-install-composer-programmatically.md
 echo "Install Composer programmatically"
@@ -47,7 +47,8 @@ sed -n "/Cloud-init.*/, /#1.*/ p"  /var/log/cloud-init-output.log >> /tmp/log01.
 sed -n "/#1.*/, /#2.*/ p"  /var/log/cloud-init-output.log >> /tmp/log02.log
 sed -n "/#2.*/, /#3.*/ p"  /var/log/cloud-init-output.log >> /tmp/log03.log
 sed -n "/#3.*/, /#4.*/ p"  /var/log/cloud-init-output.log >> /tmp/log04.log
-sed -n "/#4.*/, /Cloud-init.*/ p"  /var/log/cloud-init-output.log >> /tmp/log05.log
+sed -n "/#4.*/, /#5.*/ p"  /var/log/cloud-init-output.log >> /tmp/log05.log
+sed -n "/#5.*/, /Cloud-init.*/ p"  /var/log/cloud-init-output.log >> /tmp/log06.log
 
 
 cloudlog1=$(cat /tmp/log01.log) # Reads file content
@@ -60,8 +61,11 @@ cloudlog3=$(cat /tmp/log03.log) # Reads file content
 moosh -n forum-newdiscussion --subject "Web server and dependencies setup" --message "<pre>$cloudlog3</pre>" $courseid $forumid $userid
 
 cloudlog4=$(cat /tmp/log04.log) # Reads file content
-moosh -n forum-newdiscussion --subject "Install Moodle" --message "<pre>$cloudlog4</pre>" $courseid $forumid $userid
+moosh -n forum-newdiscussion --subject "Tools and dependencies setup" --message "<pre>$cloudlog4</pre>" $courseid $forumid $userid
 
 cloudlog5=$(cat /tmp/log05.log) # Reads file content
-moosh -n forum-newdiscussion --subject "Install Moosh" --message "<pre>$cloudlog5</pre>" $courseid $forumid $userid
+moosh -n forum-newdiscussion --subject "Install Moodle" --message "<pre>$cloudlog5</pre>" $courseid $forumid $userid
+
+cloudlog6=$(cat /tmp/log06.log) # Reads file content
+moosh -n forum-newdiscussion --subject "Install Moosh" --message "<pre>$cloudlog6</pre>" $courseid $forumid $userid
 

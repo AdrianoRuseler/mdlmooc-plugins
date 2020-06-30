@@ -134,6 +134,8 @@ sudo -i -u postgres psql -c "CREATE DATABASE mdldb;"
 sudo -i -u postgres psql -c "CREATE USER moodle WITH PASSWORD 'M00dle#2k20';" # How to use PGPASS here?
 sudo -i -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mdldb TO moodle;"
 
+echo "#3 - Tools and dependencies setup"
+
 echo "Install Universal Office Converter..."
 apt install -y unoconv
 chown www-data /var/www
@@ -144,7 +146,7 @@ apt install -y aspell dictionaries-common libaspell15 aspell-de aspell-es aspell
 echo "To be able to generate graphics from DOT files, you must have installed the dot executable..."
 apt install -y graphviz imagemagick
 
-echo "#3 - Install moodle"
+echo "#4 - Install moodle"
 
 # Clone git repository
 cd /var/www/moodle/git
