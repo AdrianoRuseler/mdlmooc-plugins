@@ -6,6 +6,7 @@ sectionid=1
  
 MOODLE_HOME="/var/www/moodle/html" # moodle core folder
 MOODLE_DATA="/mnt/mdl/data" # moodle data folder
+BKP_DIR="/mnt/mdl/mdlbkp" # moodle backup folder
 
 cd $MOODLE_HOME
  
@@ -27,6 +28,9 @@ mdldatastats=$(moosh -n data-stats)
 moosh -n forum-newdiscussion --subject "Plugins Usage - Shows the usage of the subset of the plugins used in Moodle installation." --message "<pre>$mdldatastats</pre>" $courseid $forumid $userid
 
 coreconfig=$(moosh -n config-get)
+coreconfig=$(echo $coreconfig | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g") # Hides db password
+coreconfig=$(echo $coreconfig | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g") # Hides smtp password
+
 moosh -n forum-newdiscussion --subject "Config - Get config variable from config or config_plugins table." --message "<pre>$coreconfig</pre>" $courseid $forumid $userid
 
 pluginsconfig=$(moosh -n config-plugins)
@@ -47,16 +51,16 @@ moosh -n forum-newdiscussion --subject "File dbcheck - Check that all files reco
 infoplugins=$(moosh -n info-plugins)
 moosh -n forum-newdiscussion --subject "Info Plugins - List all possible plugins in this version of Moodle and directory for each." --message "<pre>$infoplugins</pre>" $courseid $forumid $userid
 
-nowdate=$(date '+%Y%m%d')
-lastweek=$(date +%Y%m%d -d "7 day ago")
-concurrency=$(moosh -n report-concurrency -f $lastweek -t $nowdate -p 30)
-moosh -n forum-newdiscussion --subject "Report Concurrency (last Week)- Get information about concurrent users online." --message "<pre>$concurrency</pre>" $courseid $forumid $userid
+# nowdate=$(date '+%Y%m%d')
+# lastweek=$(date +%Y%m%d -d "7 day ago")
+# concurrency=$(moosh -n report-concurrency -f $lastweek -t $nowdate -p 30)
+# moosh -n forum-newdiscussion --subject "Report Concurrency (last Week)- Get information about concurrent users online." --message "<pre>$concurrency</pre>" $courseid $forumid $userid
 
-# themeinfo=$(moosh -n theme-info)
-# moosh -n forum-newdiscussion --subject "Theme Info - Show what themes are really used on Moodle site." --message "<pre>$themeinfo</pre>" $courseid $forumid $userid
+themeinfo=$(moosh -n theme-info)
+moosh -n forum-newdiscussion --subject "Theme Info - Show what themes are really used on Moodle site." --message "<pre>$themeinfo</pre>" $courseid $forumid $userid
 
-# authlist=$(moosh -n auth-list)
-# moosh -n forum-newdiscussion --subject "Auth List - List authentication plugins." --message "<pre>$authlist</pre>" $courseid $forumid $userid
+authlist=$(moosh -n auth-list)
+moosh -n forum-newdiscussion --subject "Auth List - List authentication plugins." --message "<pre>$authlist</pre>" $courseid $forumid $userid
 
 categorylist=$(moosh -n category-list)
 moosh -n forum-newdiscussion --subject "Category List - List all categories or those that match search string(s)." --message "<pre>$categorylist</pre>" $courseid $forumid $userid
@@ -68,7 +72,12 @@ moodlerootinfo1=$(ls -lh)
 moodlerootinfo2=$(du -h --max-depth=1)
  
 moosh -n forum-newdiscussion --subject "Moodle root info" --message "<pre>$moodlerootinfo1</pre><hr><pre>$moodlerootinfo2</pre>" $courseid $forumid $userid 
- 
+
+moodledatainfo1=$(ls -lh $BKP_DIR)
+moodledatainfo2=$(du -h --max-depth=1 $BKP_DIR)
+
+moosh -n forum-newdiscussion --subject "Moodle Backup info" --message "<pre>$moodledatainfo1</pre><hr><pre>$moodledatainfo2</pre>" $courseid $forumid $userid 
+
 moodledatainfo1=$(ls -lh $MOODLE_DATA)
 moodledatainfo2=$(du -h --max-depth=1 $MOODLE_DATA)
 
@@ -76,8 +85,8 @@ moosh -n forum-newdiscussion --subject "Moodle data info" --message "<pre>$moodl
  
 sysinfo=$(uname -a) # Gets system info
 diskinfo=$(df -H) # Gets disk usage info 
-httpdver=$(httpd -V)
-mysqlver=$(mysqld -V)
+httpdver=$(apachectl -V)
+mysqlver=$(psql -V)
 phpversion=$(php -v)
 
 moosh -n forum-newdiscussion --subject "System info" --message "<pre>$sysinfo</pre><hr><br><pre>$diskinfo</pre><hr><br><pre>$httpdver</pre><hr><br><pre>$mysqlver</pre><hr><br><pre>$phpversion</pre>" $courseid $forumid $userid
