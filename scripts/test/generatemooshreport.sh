@@ -11,7 +11,7 @@ BKP_DIR="/mnt/mdl/mdlbkp" # moodle backup folder
 cd $MOODLE_HOME
  
 mdlrelease=$(moosh -n config-get core release)
-moosh -n course-config-set course 1 shortname "$mdlrelease"
+moosh -n course-config-set course 1 shortname "Moodle $mdlrelease"
 
 forumid=$(moosh -n activity-add --name "Moodle $mdlrelease - Report at $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
 
