@@ -3,10 +3,12 @@
 ```bash
 #!/bin/bash
 
+# Installs Moodle - https://moodle.org
 wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scripts/test/userdata-test-ubuntu.sh
 chmod u+x userdata-test-ubuntu.sh
 sudo ./userdata-test-ubuntu.sh
 
+# Installs Moosh - https://moosh-online.com/
 wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scripts/test/mooshinstall.sh
 chmod u+x mooshinstall.sh
 sudo ./mooshinstall.sh
