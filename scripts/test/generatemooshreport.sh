@@ -27,9 +27,14 @@ moosh -n forum-newdiscussion --subject "Data Stats - Provides information on siz
 mdldatastats=$(moosh -n data-stats)
 moosh -n forum-newdiscussion --subject "Plugins Usage - Shows the usage of the subset of the plugins used in Moodle installation." --message "<pre>$mdldatastats</pre>" $courseid $forumid $userid
 
-coreconfig=$(moosh -n config-get)
-coreconfig=$(echo $coreconfig | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g") # Hides db password
-coreconfig=$(echo $coreconfig | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g") # Hides smtp password
+# coreconfig=$(moosh -n config-get)
+moosh -n config-get >> /tmp/coreconfig.txt
+# coreconfig=$(echo $coreconfig | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g") # Hides db password
+cat /tmp/coreconfig.txt | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g" >> /tmp/coreconfig2.txt
+
+#coreconfig=$(echo $coreconfig | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g") # Hides smtp password
+cat /tmp/coreconfig2.txt | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g" >> /tmp/coreconfig3.txt
+coreconfig=$(cat /tmp/coreconfig3.txt)
 
 moosh -n forum-newdiscussion --subject "Config - Get config variable from config or config_plugins table." --message "<pre>$coreconfig</pre>" $courseid $forumid $userid
 
