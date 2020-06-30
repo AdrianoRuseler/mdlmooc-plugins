@@ -174,26 +174,3 @@ sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --admi
 
 
 
-# Install composer
-cd /var/www/moodle/git
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-php composer-setup.php
-php -r "unlink('composer-setup.php');"
-
-mv composer.phar /usr/local/bin/composer
-chmod +x /usr/local/bin/composer
-composer --version
-
-# Install moosh - https://moosh-online.com/
-git clone git://github.com/tmuras/moosh.git
-cd moosh
-composer install
-ln -s $PWD/moosh.php /usr/local/bin/moosh
-
-cd /var/www/moodle/html
-userid=$(moosh -n user-create --password M00sh#2k20 --email moosh@fake.mail --city Curitiba --country BR --firstname Moosh --lastname User moosh)
-courseid=$(moosh -n course-create --category 1 --fullname "Moosh Reports" --description "Moosh command line reports" --idnumber "mooshreports" "Moosh Reports")
-moosh -n course-enrol -r teacher -i $courseid $userid
-
-
