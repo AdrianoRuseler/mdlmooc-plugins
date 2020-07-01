@@ -128,7 +128,8 @@ systemctl start postgresql
 psql --version
 
 # mydbpass
-PGPASS=$(openssl rand -base64 12) # Generates ramdon password for db user
+#PGPASS=$(openssl rand -base64 12) # Generates ramdon password for db user
+PGPASS=$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c${1:-12})
 
 # https://www.pgadmin.org/download/pgadmin-4-apt/
 
@@ -172,7 +173,7 @@ sed -i 's/mytesturl/https:\/\/'"$PUBHOST"'/' /var/www/moodle/html/config.php # C
 
 cp /var/www/moodle/git/plugins/scripts/test/defaults-dist.php /var/www/moodle/html/local/defaults.php 
 sed -i 's/mytesturl/'"$PUBHOST"'/' /var/www/moodle/html/local/defaults.php 
-MDLADMPASS=$(openssl rand -base64 12) # Generates ramdon password for Moodle Admin
+MDLADMPASS=$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c${1:-12}) # Generates ramdon password for Moodle Admin
 sed -i 's/myadmpass/'"$MDLADMPASS"'/' /var/www/moodle/html/local/defaults.php 
 
 # Fix permissions
