@@ -3,11 +3,12 @@
 echo "#5 - Install Moosh"
 cd /var/www/moodle/git
 # https://getcomposer.org/doc/faqs/how-to-install-composer-programmatically.md
-echo "Install Composer programmatically"
+echo "Download composer-setup.php ..."
 EXPECTED_CHECKSUM="$(wget -q -O - https://composer.github.io/installer.sig)"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
 
+echo "Verify composer-setup.php ..."
 if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]
 then
     echo 'ERROR: Invalid installer checksum'
@@ -15,6 +16,7 @@ then
 	exit 1
 fi
 
+echo "Install composer-setup.php ..."
 php composer-setup.php --quiet
 rm composer-setup.php
 
