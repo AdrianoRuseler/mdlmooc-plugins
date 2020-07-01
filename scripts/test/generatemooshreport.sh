@@ -13,20 +13,25 @@ cd $MOODLE_HOME
 mdlrelease=$(moosh -n config-get core release)
 moosh -n course-config-set course 1 shortname "Moodle $mdlrelease"
 
+echo "Create Forum:"
 forumid=$(moosh -n activity-add --name "Moodle $mdlrelease - Report at $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
 
 # courseusers=$(moosh -n user-list --course $courseid)
 # moosh -n forum-newdiscussion --subject "Users in this Course" --message "<pre>$courseusers</pre>" $courseid $forumid $userid
 
+echo "Post - Plugins Usage" 
 mdlpluginsusage=$(moosh -n plugins-usage)
 moosh -n forum-newdiscussion --subject "Plugins Usage - Shows the usage of the subset of the plugins used in Moodle installation." --message "<pre>$mdlpluginsusage</pre>" $courseid $forumid $userid
 
+echo "Post - Data Stats" 
 datastats=$(moosh -n data-stats)
 moosh -n forum-newdiscussion --subject "Data Stats - Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle." --message "<pre>$datastats</pre>" $courseid $forumid $userid
 
+echo "Post - Plugins Usage"
 mdldatastats=$(moosh -n data-stats)
 moosh -n forum-newdiscussion --subject "Plugins Usage - Shows the usage of the subset of the plugins used in Moodle installation." --message "<pre>$mdldatastats</pre>" $courseid $forumid $userid
 
+echo "Post - Core Config variables"
 # coreconfig=$(moosh -n config-get)
 moosh -n config-get >> /tmp/coreconfig.txt
 # coreconfig=$(echo $coreconfig | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g") # Hides db password
@@ -38,21 +43,27 @@ coreconfig=$(cat /tmp/coreconfig3.txt)
 
 moosh -n forum-newdiscussion --subject "Config - Get config variable from config or config_plugins table." --message "<pre>$coreconfig</pre>" $courseid $forumid $userid
 
+echo "Post - Plugin Config variables"
 pluginsconfig=$(moosh -n config-plugins)
 moosh -n forum-newdiscussion --subject "Config - Get config variable from config_plugins table." --message "<pre>$pluginsconfig</pre>" $courseid $forumid $userid
 
+echo "Post - Course List"
 courselist=$(moosh -n course-list)
 moosh -n forum-newdiscussion --subject "Course List - Lists courses that match your search criteria." --message "<pre>$courselist</pre>" $courseid $forumid $userid
 
+echo "Post - Event List"
 eventlist=$(moosh -n event-list)
 moosh -n forum-newdiscussion --subject "Event List - List all events available in current Moodle installation." --message "<pre>$eventlist</pre>" $courseid $forumid $userid
 
+echo "Post - File Datacheck"
 datacheck=$(moosh -n file-datacheck)
 moosh -n forum-newdiscussion --subject "File Datacheck - Go through all files in Moodle data and check them for corruption." --message "<pre>$datacheck</pre>" $courseid $forumid $userid
 
+echo "Post - File dbcheck"
 dbcheck=$(moosh -n file-dbcheck)
 moosh -n forum-newdiscussion --subject "File dbcheck - Check that all files recorder in the DB do exist in Moodle data directory." --message "<pre>$dbcheck</pre>" $courseid $forumid $userid
 
+echo "Post - Info Plugins"
 infoplugins=$(moosh -n info-plugins)
 moosh -n forum-newdiscussion --subject "Info Plugins - List all possible plugins in this version of Moodle and directory for each." --message "<pre>$infoplugins</pre>" $courseid $forumid $userid
 
@@ -61,18 +72,23 @@ moosh -n forum-newdiscussion --subject "Info Plugins - List all possible plugins
 # concurrency=$(moosh -n report-concurrency -f $lastweek -t $nowdate -p 30)
 # moosh -n forum-newdiscussion --subject "Report Concurrency (last Week)- Get information about concurrent users online." --message "<pre>$concurrency</pre>" $courseid $forumid $userid
 
+echo "Post - Theme Info"
 themeinfo=$(moosh -n theme-info)
 moosh -n forum-newdiscussion --subject "Theme Info - Show what themes are really used on Moodle site." --message "<pre>$themeinfo</pre>" $courseid $forumid $userid
 
+echo "Post - Auth List"
 authlist=$(moosh -n auth-list)
 moosh -n forum-newdiscussion --subject "Auth List - List authentication plugins." --message "<pre>$authlist</pre>" $courseid $forumid $userid
 
+echo "Post - Category List"
 categorylist=$(moosh -n category-list)
 moosh -n forum-newdiscussion --subject "Category List - List all categories or those that match search string(s)." --message "<pre>$categorylist</pre>" $courseid $forumid $userid
  
+echo "Post - PHP Info"
 phpinfo=$(php -i)
 moosh -n forum-newdiscussion --subject "PHP Info" --message "<pre>$phpinfo</pre>" $courseid $forumid $userid
  
+echo "Post - Moodle root/data info" 
 moodlerootinfo1=$(ls -lh)
 moodlerootinfo2=$(du -h --max-depth=1)
 
@@ -81,11 +97,14 @@ moodledatainfo4=$(du -h --max-depth=1 $MOODLE_DATA)
 
 moosh -n forum-newdiscussion --subject "Moodle root/data info" --message "<pre>$moodlerootinfo1</pre><hr><pre>$moodlerootinfo2</pre><hr><pre>$moodlerootinfo3</pre><hr><pre>$moodlerootinfo4</pre>" $courseid $forumid $userid 
 
+echo "Post - Moodle Backup info"
 moodlebkpinfo1=$(ls -lh $BKP_DIR)
 moodlebkpinfo2=$(du -h --max-depth=1 $BKP_DIR)
 
 moosh -n forum-newdiscussion --subject "Moodle Backup info" --message "<hr><pre>$moodlebkpinfo1</pre><hr><pre>$moodlebkpinfo2</pre>" $courseid $forumid $userid 
  
+ 
+echo "Post - System info"
 sysinfo=$(uname -a) # Gets system info
 diskinfo=$(df -H) # Gets disk usage info 
 httpdver=$(apachectl -V)
@@ -94,7 +113,7 @@ phpversion=$(php -v)
 
 moosh -n forum-newdiscussion --subject "System info" --message "<hr><pre>$sysinfo</pre><hr><br><pre>$diskinfo</pre><hr><br><pre>$httpdver</pre><hr><br><pre>$mysqlver</pre><hr><br><pre>$phpversion</pre>" $courseid $forumid $userid
 
-
+echo "Post - List of scheduled tasks"
 # List of scheduled tasks 
 # admin/tool/task/cli/schedule_task.php --list
 sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --list | cat > /tmp/scheduletasklist.txt
