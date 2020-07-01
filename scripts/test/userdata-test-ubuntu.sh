@@ -189,7 +189,7 @@ sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --admi
 
 (crontab -l | grep . ; echo -e "*/1 * * * * /usr/bin/php  /var/www/moodle/html/admin/cli/cron.php >/dev/null\n") | crontab -
 
-
 # Install H5P content
 sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --execute='\core\task\h5p_get_content_types_task'
+
 
