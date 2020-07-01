@@ -97,8 +97,7 @@ moosh -n forum-newdiscussion --subject "System info" --message "<hr><pre>$sysinf
 
 # List of scheduled tasks 
 # admin/tool/task/cli/schedule_task.php --list
-sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --list >> /tmp/scheduletasklist.txt
+sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --list | cat > /tmp/scheduletasklist.txt
 
 scheduletasklist=$(cat /tmp/scheduletasklist.txt)
 moosh -n forum-newdiscussion --subject "List of scheduled tasks" --message "<h5>List of scheduled tasks</h5><pre>$scheduletasklist</pre>" $courseid $forumid $userid
-
