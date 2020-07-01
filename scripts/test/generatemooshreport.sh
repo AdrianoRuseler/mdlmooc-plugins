@@ -33,12 +33,12 @@ moosh -n forum-newdiscussion --subject "Plugins Usage - Shows the usage of the s
 
 echo "Post - Core Config variables"
 # coreconfig=$(moosh -n config-get)
-moosh -n config-get >> /tmp/coreconfig.txt
+moosh -n config-get > /tmp/coreconfig.txt
 # coreconfig=$(echo $coreconfig | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g") # Hides db password
-cat /tmp/coreconfig.txt | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g" >> /tmp/coreconfig2.txt
+cat /tmp/coreconfig.txt | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g" > /tmp/coreconfig2.txt
 
 #coreconfig=$(echo $coreconfig | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g") # Hides smtp password
-cat /tmp/coreconfig2.txt | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g" >> /tmp/coreconfig3.txt
+cat /tmp/coreconfig2.txt | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g" > /tmp/coreconfig3.txt
 coreconfig=$(cat /tmp/coreconfig3.txt)
 
 moosh -n forum-newdiscussion --subject "Config - Get config variable from config or config_plugins table." --message "<pre>$coreconfig</pre>" $courseid $forumid $userid
@@ -116,7 +116,7 @@ moosh -n forum-newdiscussion --subject "System info" --message "<hr><pre>$sysinf
 echo "Post - List of scheduled tasks"
 # List of scheduled tasks 
 # admin/tool/task/cli/schedule_task.php --list
-sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --list | cat > /tmp/scheduletasklist.txt
+sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --list > /tmp/scheduletasklist.txt
 
 scheduletasklist=$(cat /tmp/scheduletasklist.txt)
 moosh -n forum-newdiscussion --subject "List of scheduled tasks" --message "<h5>List of scheduled tasks</h5><pre>$scheduletasklist</pre>" $courseid $forumid $userid
