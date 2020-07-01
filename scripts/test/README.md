@@ -23,3 +23,5 @@ wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scr
 chmod u+x generatemooshreport.sh
 sudo ./generatemooshreport.sh
 ```
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/njY4DGnKgyw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
