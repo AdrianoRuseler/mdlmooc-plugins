@@ -22,3 +22,5 @@ $defaults['moodle']['aspellpath'] = '/usr/bin/aspell';
 $defaults['moodle']['pathtogs'] = '/usr/bin/gs';
 $defaults['moodle']['pathtodot'] = '/usr/bin/dot';
 $defaults['moodle']['pathtopython'] = '/usr/bin/python3';
+
+$defaults['moodle']['auth_instructions'] = 'Instruções de Login aqui!';
