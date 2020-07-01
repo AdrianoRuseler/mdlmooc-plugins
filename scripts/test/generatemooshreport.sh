@@ -25,7 +25,7 @@ moosh -n forum-newdiscussion --subject "Plugins Usage - Shows the usage of the s
 
 echo "Post - Data Stats" 
 datastats=$(moosh -n data-stats)
-moosh -n forum-newdiscussion --subject "Data Stats - Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle." --message "<pre>$datastats</pre>" $courseid $forumid $userid
+moosh -n forum-newdiscussion --subject "Data Stats - Provides information on size of dataroot directory." --message "<pre>$datastats</pre>" $courseid $forumid $userid
 
 echo "Post - Plugins Usage"
 mdldatastats=$(moosh -n data-stats)
