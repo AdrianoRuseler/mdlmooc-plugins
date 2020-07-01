@@ -6,7 +6,7 @@ sectionid=1
  
 MOODLE_HOME="/var/www/moodle/html" # moodle core folder
 MOODLE_DATA="/mnt/mdl/data" # moodle data folder
-BKP_DIR="/mnt/mdl/mdlbkp" # moodle backup folder
+BKP_DIR="/mnt/mdl/bkp" # moodle backup folder
 
 cd $MOODLE_HOME
  

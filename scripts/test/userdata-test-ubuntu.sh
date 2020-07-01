@@ -26,7 +26,8 @@ update-locale LANG=pt_BR.UTF-8 # Requires reboot
 mkdir /mnt/mdl
 mkfs -t xfs /dev/xvdb
 mount -t xfs /dev/xvdb /mnt/mdl
-mkdir -p /mnt/mdl/{db,data,mdlbkp}
+mkdir -p /mnt/mdl/{db,data,bkp}
+mkdir -p /mnt/mdl/bkp/{db,data,html} # Creates backup folders
 
 # Automatically mount an attached volume after reboot
 cp /etc/fstab /etc/fstab.orig # Make backup
