@@ -27,7 +27,7 @@ mkdir /mnt/mdl
 mkfs -t xfs /dev/xvdb
 mount -t xfs /dev/xvdb /mnt/mdl
 mkdir -p /mnt/mdl/{db,data,bkp}
-mkdir -p /mnt/mdl/bkp/{db,data,html} # Creates backup folders
+mkdir -p /mnt/mdl/bkp/{db,data,html,auto} # Creates backup folders
 
 # Automatically mount an attached volume after reboot
 cp /etc/fstab /etc/fstab.orig # Make backup
@@ -58,6 +58,8 @@ systemctl status apache2
 mkdir -p /var/www/moodle/{html,local,cache,temp,git}
 # cp /var/www/html/index.html /var/www/moodle/html/index.html
 chown -R www-data:www-data /var/www/moodle/{html,local,cache,temp,git}
+
+chown -R www-data:www-data /mnt/mdl/bkp/{db,data,html,auto} # Creates backup folders
 
 # Create new conf files
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/sophia.conf
@@ -187,6 +189,7 @@ mdlver=$(cat version.php | grep '$release' | cut -d\' -f 2) # Gets Moodle Versio
 #Install moodle database
 sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=sophia-mailer@mail.ct.utfpr.edu.br --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
 
+# Add cron for moodle
 (crontab -l | grep . ; echo -e "*/1 * * * * /usr/bin/php  /var/www/moodle/html/admin/cli/cron.php >/dev/null\n") | crontab -
 
 # Install H5P content
