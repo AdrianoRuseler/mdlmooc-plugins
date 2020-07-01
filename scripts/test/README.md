@@ -13,9 +13,13 @@ wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scr
 chmod u+x mooshinstall.sh
 sudo ./mooshinstall.sh
 
+# Creates system backup
+wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scripts/test/moodle-backup.sh
+chmod u+x moodle-backup.sh
+sudo ./moodle-backup.sh
+
 # Runs Moosh Report
 wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scripts/test/generatemooshreport.sh
 chmod u+x generatemooshreport.sh
 sudo ./generatemooshreport.sh
 ```
-
