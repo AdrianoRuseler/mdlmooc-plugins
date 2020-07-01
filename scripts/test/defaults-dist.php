@@ -23,4 +23,8 @@ $defaults['moodle']['pathtogs'] = '/usr/bin/gs';
 $defaults['moodle']['pathtodot'] = '/usr/bin/dot';
 $defaults['moodle']['pathtopython'] = '/usr/bin/python3';
 
-$defaults['moodle']['auth_instructions'] = 'Instruções de Login aqui!';
+$defaults['moodle']['auth_instructions'] = 'Usuário: admin
+Senha: myadmpass';
+$defaults['moodle']['forcelogin'] = 1;
+
+$defaults['moodle']['converter_plugins_sortorder'] = 'unoconv';
