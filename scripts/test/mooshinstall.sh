@@ -33,7 +33,8 @@ ln -s $PWD/moosh.php /usr/local/bin/moosh
 
 echo "Create moosh user and report course"
 cd /var/www/moodle/html
-userid=$(moosh -n user-create --password M00sh#2k20 --email moosh@fake.mail --city Curitiba --country BR --firstname Moosh --lastname User moosh)
+MOOSHPASS=$(openssl rand -base64 12) # Generates ramdon password for Moodle Admin
+userid=$(moosh -n user-create --password $MOOSHPASS --email moosh@fake.mail --city Curitiba --country BR --firstname Moosh --lastname User moosh)
 courseid=$(moosh -n course-create --category 1 --fullname "Moosh Reports" --description "Moosh command line reports" --idnumber "mooshreports" "Moosh Reports")
 moosh -n course-enrol -r teacher -i $courseid $userid
 

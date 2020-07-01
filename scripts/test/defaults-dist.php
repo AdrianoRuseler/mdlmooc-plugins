@@ -27,4 +27,4 @@ $defaults['moodle']['auth_instructions'] = 'Usuário: admin
 Senha: myadmpass';
 $defaults['moodle']['forcelogin'] = 1;
 
-$defaults['moodle']['converter_plugins_sortorder'] = 'unoconv';
+// $defaults['moodle']['converter_plugins_sortorder'] = 'unoconv'; // Not worked

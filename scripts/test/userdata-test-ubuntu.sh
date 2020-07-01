@@ -123,16 +123,22 @@ sudo systemctl enable postgresql
 mkdir -p /mnt/mdl/db/data
 chown -R postgres:postgres /mnt/mdl/db
 sudo -i -u postgres /usr/lib/postgresql/12/bin/pg_ctl -D /mnt/mdl/db/data initdb
-
-# mydbpass
-#PGPASS=$(openssl rand -base64 12)
-PGPASS='M00dle#2k20'
-
 systemctl start postgresql
 psql --version
-sudo -i -u postgres psql -c "CREATE DATABASE mdldb;"
-sudo -i -u postgres psql -c "CREATE USER moodle WITH PASSWORD 'M00dle#2k20';" # How to use PGPASS here?
-sudo -i -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mdldb TO moodle;"
+
+# mydbpass
+PGPASS=$(openssl rand -base64 12) # Generates ramdon password for db user
+
+# https://www.pgadmin.org/download/pgadmin-4-apt/
+
+touch /tmp/createdbuser.sql
+echo 'CREATE DATABASE mdldb;' >> /tmp/createdbuser.sql
+echo $'CREATE USER moodle WITH PASSWORD \''${PGPASS}$'\';' >> /tmp/createdbuser.sql
+echo 'GRANT ALL PRIVILEGES ON DATABASE mdldb TO moodle;' >> /tmp/createdbuser.sql
+cat /tmp/createdbuser.sql
+
+sudo -i -u postgres psql -f /tmp/createdbuser.sql
+rm /tmp/createdbuser.sql
 
 echo "#3 - Tools and dependencies setup"
 
@@ -160,11 +166,13 @@ mv /tmp/moodle/* /var/www/moodle/html
 
 # Copy moodle config file
 cp /var/www/moodle/git/plugins/scripts/test/config-dist.php /var/www/moodle/html/config.php 
-sed -i 's/mydbpass/'"$PGPASS"'/' /var/www/moodle/html/config.php
-sed -i 's/mytesturl/https:\/\/'"$PUBHOST"'/' /var/www/moodle/html/config.php
+sed -i 's/mydbpass/'"$PGPASS"'/' /var/www/moodle/html/config.php # Configure password
+sed -i 's/mytesturl/https:\/\/'"$PUBHOST"'/' /var/www/moodle/html/config.php # Configure url
 
 cp /var/www/moodle/git/plugins/scripts/test/defaults-dist.php /var/www/moodle/html/local/defaults.php 
 sed -i 's/mytesturl/'"$PUBHOST"'/' /var/www/moodle/html/local/defaults.php 
+MDLADMPASS=$(openssl rand -base64 12) # Generates ramdon password for Moodle Admin
+sed -i 's/myadmpass/'"$MDLADMPASS"'/' /var/www/moodle/html/local/defaults.php 
 
 # Fix permissions
 chmod 740 /var/www/moodle/html/admin/cli/cron.php
@@ -175,7 +183,7 @@ cd /var/www/moodle/html
 mdlver=$(cat version.php | grep '$release' | cut -d\' -f 2) # Gets Moodle Version
 
 #Install moodle database
-sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=M00dle#2k20 --agree-license --adminemail=sophia-mailer@mail.ct.utfpr.edu.br --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
+sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=sophia-mailer@mail.ct.utfpr.edu.br --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
 
 (crontab -l | grep . ; echo -e "*/1 * * * * /usr/bin/php  /var/www/moodle/html/admin/cli/cron.php >/dev/null\n") | crontab -
 
