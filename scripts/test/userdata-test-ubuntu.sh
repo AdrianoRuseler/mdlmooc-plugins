@@ -123,7 +123,7 @@ sudo systemctl enable postgresql
 
 mkdir -p /mnt/mdl/db/data
 chown -R postgres:postgres /mnt/mdl/db
-sudo -i -u postgres /usr/lib/postgresql/12/bin/pg_ctl -D /mnt/mdl/db/data initdb
+sudo -i -u postgres /usr/lib/postgresql/12/bin/pg_ctl -D /mnt/mdl/db/data initdb # Inits database
 systemctl start postgresql
 psql --version
 
