@@ -14,7 +14,7 @@ mdlrelease=$(moosh -n config-get core release)
 moosh -n course-config-set course 1 shortname "Moodle $mdlrelease"
 
 echo "Create Forum:"
-forumid=$(moosh -n activity-add --name "Moodle $mdlrelease - Report at $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
+forumid=$(moosh -n activity-add --name "Moodle $mdlrelease - System Report at $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
 
 # courseusers=$(moosh -n user-list --course $courseid)
 # moosh -n forum-newdiscussion --subject "Users in this Course" --message "<pre>$courseusers</pre>" $courseid $forumid $userid
@@ -46,6 +46,7 @@ moosh -n forum-newdiscussion --subject "Moodle core config - Get core config var
 echo "Post - Plugins Config List"
 pluginsconfig=$(moosh -n config-plugins)
 moosh -n forum-newdiscussion --subject "Plugins Config List - Get config variable from config_plugins table." --message "<pre>$pluginsconfig</pre>" $courseid $forumid $userid
+
 
 echo "Post - Backup Config Variable"
 bkpconfig=$(moosh -n config-get backup)
@@ -89,9 +90,9 @@ echo "Post - Category List"
 categorylist=$(moosh -n category-list)
 moosh -n forum-newdiscussion --subject "Category List - List all categories or those that match search string(s)." --message "<pre>$categorylist</pre>" $courseid $forumid $userid
  
-echo "Post - PHP Info"
-phpinfo=$(php -i)
-moosh -n forum-newdiscussion --subject "PHP Info" --message "<pre>$phpinfo</pre>" $courseid $forumid $userid
+# echo "Post - PHP Info"
+# phpinfo=$(php -i)
+# moosh -n forum-newdiscussion --subject "PHP Info" --message "<pre>$phpinfo</pre>" $courseid $forumid $userid
  
 echo "Post - Moodle root/data info" 
 moodlerootinfo1=$(ls -lh)
@@ -125,3 +126,45 @@ sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --list > /tm
 
 scheduletasklist=$(cat /tmp/scheduletasklist.txt)
 moosh -n forum-newdiscussion --subject "List of scheduled tasks" --message "<h5>List of scheduled tasks</h5><pre>$scheduletasklist</pre>" $courseid $forumid $userid
+
+# Change section and post all plugins settings
+sectionid=2
+echo "Create Forum for themes:"
+forumid=$(moosh -n activity-add --name "Themes" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
+
+pluginsconfig=$(moosh -n config-plugins theme)
+# Iterate the string variable using for loop
+for val in $pluginsconfig; do
+    echo $val
+	pconfig=$(moosh -n config-get $val)
+	moosh -n forum-newdiscussion --subject "$val" --message "<h3>moosh -n config-get $val</h3><hr><pre>$pconfig</pre>" $courseid $forumid $userid
+done
+
+
+forumid=$(moosh -n activity-add --name "Plugins Types - Moodle $mdlrelease - $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
+list="cache data atto block book qtype quiz report workshop mod repository tinymce tool user url web resource auth enrol availability assign editor grade qbehaviour profile customcert filter"
+for ptype in $list; do
+	echo "Config Settings for $ptype..."
+	plist=$(moosh -n config-plugins $ptype)
+	strout=""
+	for pval in $plist; do
+		pconfig=$(moosh -n config-get $pval)
+		strout="$strout<hr><h3>$pval</h3><hr><pre>$pconfig</pre>"
+	done
+	moosh -n forum-newdiscussion --subject "$ptype" --message "$strout" $courseid $forumid $userid
+done
+
+
+forumid=$(moosh -n activity-add --name "Backup/Restore - Moodle $mdlrelease - $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
+list="restore backup"
+for ptype in $list; do
+	echo "Config Settings for $ptype..."
+	plist=$(moosh -n config-plugins $ptype)
+	strout=""
+	for pval in $plist; do
+		pconfig=$(moosh -n config-get $pval)
+		strout="$strout<hr><h3>$pval</h3><hr><pre>$pconfig</pre>"
+	done
+	moosh -n forum-newdiscussion --subject "$ptype" --message "$strout" $courseid $forumid $userid
+done
+
