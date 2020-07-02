@@ -30,6 +30,6 @@ $defaults['moodle']['forcelogin'] = 1;
 // $defaults['moodle']['converter_plugins_sortorder'] = 'unoconv'; // Not worked fileconverter_unoconv
 
 $defaults['backup']['backup_auto_active'] = 2; // Manual
-$defaults['backup']['backup_auto_storage'] = 2; // 
+$defaults['backup']['backup_auto_storage'] = 2; // Save on backup area and external location
 $defaults['backup']['backup_auto_destination'] = '/mnt/mdl/bkp/auto';
-
+$defaults['backup']['backup_auto_skip_modif_prev'] = 0; // 

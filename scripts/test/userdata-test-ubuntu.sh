@@ -56,9 +56,7 @@ systemctl status apache2
 
 #Create directory structure
 mkdir -p /var/www/moodle/{html,local,cache,temp,git}
-# cp /var/www/html/index.html /var/www/moodle/html/index.html
 chown -R www-data:www-data /var/www/moodle/{html,local,cache,temp,git}
-
 chown -R www-data:www-data /mnt/mdl/bkp/{db,data,html,auto} # Creates backup folders
 
 # Create new conf files
@@ -95,7 +93,7 @@ sed -i 's/post_max_size =.*/post_max_size = 128M/' /etc/php/7.4/apache2/php.ini
 sed -i 's/upload_max_filesize =.*/upload_max_filesize = 128M/' /etc/php/7.4/apache2/php.ini
 systemctl reload apache2
 
-# create hidden opcache directory locally & change owner to apache
+# create hidden opcache directory locally & change owner to apache - NOT TESTED
 if [ ! -d /var/www/.opcache ]; then
   mkdir -p /var/www/.opcache
 fi
@@ -129,11 +127,10 @@ sudo -i -u postgres /usr/lib/postgresql/12/bin/pg_ctl -D /mnt/mdl/db/data initdb
 systemctl start postgresql
 psql --version
 
-# mydbpass
-#PGPASS=$(openssl rand -base64 12) # Generates ramdon password for db user
-PGPASS=$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c${1:-12})
-
-# https://www.pgadmin.org/download/pgadmin-4-apt/
+echo "Install pwgen..."
+# https://www.2daygeek.com/5-ways-to-generate-a-random-strong-password-in-linux-terminal/
+apt install -y pwgen # Install pwgen
+PGPASS=$(pwgen -s 14 1) # Generates ramdon password for db user
 
 touch /tmp/createdbuser.sql
 echo 'CREATE DATABASE mdldb;' >> /tmp/createdbuser.sql
@@ -144,7 +141,7 @@ cat /tmp/createdbuser.sql
 sudo -i -u postgres psql -f /tmp/createdbuser.sql
 rm /tmp/createdbuser.sql
 
-echo "#3 - Tools and dependencies setup"
+echo "#3 - Tools and dependencies for Moodle"
 
 echo "Install Universal Office Converter..."
 apt install -y unoconv
@@ -155,6 +152,13 @@ apt install -y aspell dictionaries-common libaspell15 aspell-de aspell-es aspell
 
 echo "To be able to generate graphics from DOT files, you must have installed the dot executable..."
 apt install -y graphviz imagemagick
+
+export DEBIAN_FRONTEND=noninteractive
+apt update && apt upgrade -yq
+
+echo "Autoremove and Autoclean System..."
+apt autoremove -yq && apt autoclean -yq
+
 
 echo "#4 - Install moodle"
 
@@ -175,7 +179,8 @@ sed -i 's/mytesturl/https:\/\/'"$PUBHOST"'/' /var/www/moodle/html/config.php # C
 
 cp /var/www/moodle/git/plugins/scripts/test/defaults-dist.php /var/www/moodle/html/local/defaults.php 
 sed -i 's/mytesturl/'"$PUBHOST"'/' /var/www/moodle/html/local/defaults.php 
-MDLADMPASS=$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c${1:-12}) # Generates ramdon password for Moodle Admin
+MDLADMPASS=$(pwgen -s 14 1) # Generates ramdon password for Moodle Admin
+
 sed -i 's/myadmpass/'"$MDLADMPASS"'/' /var/www/moodle/html/local/defaults.php 
 
 # Fix permissions
@@ -189,7 +194,7 @@ mdlver=$(cat version.php | grep '$release' | cut -d\' -f 2) # Gets Moodle Versio
 #Install moodle database
 sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=sophia-mailer@mail.ct.utfpr.edu.br --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
 
-# Add cron for moodle
+# Add cron for moodle - Shows: no crontab for root
 (crontab -l | grep . ; echo -e "*/1 * * * * /usr/bin/php  /var/www/moodle/html/admin/cli/cron.php >/dev/null\n") | crontab -
 
 # Install H5P content

@@ -130,7 +130,7 @@ moosh -n forum-newdiscussion --subject "List of scheduled tasks" --message "<h5>
 # Change section and post all plugins settings
 sectionid=2
 echo "Create Forum for themes:"
-forumid=$(moosh -n activity-add --name "Themes" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
+forumid=$(moosh -n activity-add --name "Themes - Moodle $mdlrelease - $(date)" -o="--intro=Moodle version $mdlrelease - $(date)." --section $sectionid forum $courseid)
 
 pluginsconfig=$(moosh -n config-plugins theme)
 # Iterate the string variable using for loop
