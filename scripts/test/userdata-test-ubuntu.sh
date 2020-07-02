@@ -190,6 +190,21 @@ sed -i 's/mytesturl/'"$PUBHOST"'/' /var/www/moodle/html/local/defaults.php
 MDLADMPASS=$(pwgen -s 14 1) # Generates ramdon password for Moodle Admin
 sed -i 's/myadmpass/'"$MDLADMPASS"'/' /var/www/moodle/html/local/defaults.php # Set password in file
 
+
+# Set email sender
+if [[ -z "${SMTP_HOST}" ]]; then # If variable is defined
+	echo "Email sender not defined!!"
+else
+# Email Setup
+	echo '' >> /var/www/moodle/html/local/defaults.php
+	echo $'$defaults[\'moodle\'][\'smtphosts\'] = \''${SMTP_HOST}$':587\';' >> /var/www/moodle/html/local/defaults.php
+	echo $'$defaults[\'moodle\'][\'smtpsecure\'] = \'tls\';' >> /var/www/moodle/html/local/defaults.php
+	echo $'$defaults[\'moodle\'][\'smtpauthtype\'] = \'LOGIN\';' >> /var/www/moodle/html/local/defaults.php
+	echo $'$defaults[\'moodle\'][\'smtpuser\'] = \''${SMTP_USER}$'\';' >> /var/www/moodle/html/local/defaults.php
+	echo $'$defaults[\'moodle\'][\'smtppass\'] = \''${SMTP_PASS}$'\';' >> /var/www/moodle/html/local/defaults.php
+	echo '' >> /var/www/moodle/html/local/defaults.php
+fi
+
 # Fix permissions
 chmod 740 /var/www/moodle/html/admin/cli/cron.php
 chown www-data:www-data -R /var/www/moodle/html
