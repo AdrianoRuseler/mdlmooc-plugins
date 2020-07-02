@@ -60,25 +60,32 @@ chown -R www-data:www-data /var/www/moodle/{html,local,cache,temp,git}
 chown -R www-data:www-data /mnt/mdl/bkp/{db,data,html,auto} # Creates backup folders
 
 # Create new conf files
-cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/sophia.conf
-cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/sophia-ssl.conf
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/moodle.conf
+cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/moodle-ssl.conf
 
 # Gets public hostname
 PUBHOST=$(ec2metadata --public-hostname | cut -d : -f 2 | tr -d " ")
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt -subj $"/C=BR/ST=PR/L=CWB/O=SOPHIA/CN='${PUBHOST}$'"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt -subj $"/C=BR/ST=PR/L=CWB/O=MDLTEST/CN='${PUBHOST}$'"
 
-sed -i 's/webmaster@localhost/sophia-mailer@mail.ct.utfpr.edu.br/' /etc/apache2/sites-available/sophia-ssl.conf
-sed -i 's/\/var\/www\/html/\/var\/www\/moodle\/html/' /etc/apache2/sites-available/sophia-ssl.conf
-sed -i 's/ssl-cert-snakeoil.pem/apache-selfsigned.crt/' /etc/apache2/sites-available/sophia-ssl.conf
-sed -i 's/ssl-cert-snakeoil.key/apache-selfsigned.key/' /etc/apache2/sites-available/sophia-ssl.conf
+# Set webmaster email
+if [[ -z "${ADM_EMAIL}" ]]; then # If variable is defined
+  sed -i 's/webmaster@localhost/admin@fake.mail/' /etc/apache2/sites-available/moodle-ssl.conf
+  sed -i 's/webmaster@localhost/admin@fake.mail/' /etc/apache2/sites-available/moodle.conf
+else
+  sed -i 's/webmaster@localhost/$ADM_EMAIL/' /etc/apache2/sites-available/moodle-ssl.conf
+  sed -i 's/webmaster@localhost/$ADM_EMAIL/' /etc/apache2/sites-available/moodle.conf
+fi
 
-sed -i 's/webmaster@localhost/sophia-mailer@mail.ct.utfpr.edu.br/' /etc/apache2/sites-available/sophia.conf
-sed -i 's/\/var\/www\/html/\/var\/www\/moodle\/html/' /etc/apache2/sites-available/sophia.conf
+sed -i 's/\/var\/www\/html/\/var\/www\/moodle\/html/' /etc/apache2/sites-available/moodle-ssl.conf
+sed -i 's/\/var\/www\/html/\/var\/www\/moodle\/html/' /etc/apache2/sites-available/moodle.conf
+sed -i 's/ssl-cert-snakeoil.pem/apache-selfsigned.crt/' /etc/apache2/sites-available/moodle-ssl.conf
+sed -i 's/ssl-cert-snakeoil.key/apache-selfsigned.key/' /etc/apache2/sites-available/moodle-ssl.conf
+
 # Redirect http to https
-sed -i '/combined/a \\n\tRewriteEngine On \n\tRewriteCond %{HTTPS} off \n\tRewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}' /etc/apache2/sites-available/sophia.conf
+sed -i '/combined/a \\n\tRewriteEngine On \n\tRewriteCond %{HTTPS} off \n\tRewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}' /etc/apache2/sites-available/moodle.conf
 
 
-a2ensite sophia.conf sophia-ssl.conf # Enable sites
+a2ensite moodle.conf moodle-ssl.conf # Enable sites
 a2dissite 000-default.conf default-ssl.conf # Disable sites
 systemctl reload apache2
 
@@ -114,6 +121,7 @@ systemctl enable memcached
 systemctl start memcached
 systemctl start redis
 
+# Display status
 systemctl status memcached
 systemctl status redis
 
@@ -180,8 +188,7 @@ sed -i 's/mytesturl/https:\/\/'"$PUBHOST"'/' /var/www/moodle/html/config.php # C
 cp /var/www/moodle/git/plugins/scripts/test/defaults-dist.php /var/www/moodle/html/local/defaults.php 
 sed -i 's/mytesturl/'"$PUBHOST"'/' /var/www/moodle/html/local/defaults.php 
 MDLADMPASS=$(pwgen -s 14 1) # Generates ramdon password for Moodle Admin
-
-sed -i 's/myadmpass/'"$MDLADMPASS"'/' /var/www/moodle/html/local/defaults.php 
+sed -i 's/myadmpass/'"$MDLADMPASS"'/' /var/www/moodle/html/local/defaults.php # Set password in file
 
 # Fix permissions
 chmod 740 /var/www/moodle/html/admin/cli/cron.php
@@ -192,7 +199,11 @@ cd /var/www/moodle/html
 mdlver=$(cat version.php | grep '$release' | cut -d\' -f 2) # Gets Moodle Version
 
 #Install moodle database
-sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=sophia-mailer@mail.ct.utfpr.edu.br --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
+if [[ -z "${ADM_EMAIL}" ]]; then # If variable is defined
+  sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=admin@fake.mail --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
+else
+  sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=$ADM_EMAIL --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
+fi
 
 # Add cron for moodle - Shows: no crontab for root
 (crontab -l | grep . ; echo -e "*/1 * * * * /usr/bin/php  /var/www/moodle/html/admin/cli/cron.php >/dev/null\n") | crontab -
