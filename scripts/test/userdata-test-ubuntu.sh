@@ -205,6 +205,17 @@ else
 	echo '' >> /var/www/moodle/html/local/defaults.php
 fi
 
+# Set BigBluButton server
+if [[ -z "${BBB_URL}" ]]; then # If variable is defined
+	echo "BBB server not defined!!"
+else
+# Email Setup
+	echo '' >> /var/www/moodle/html/local/defaults.php
+	echo $'$defaults[\'moodle\'][\'bigbluebuttonbn_server_url\'] = \''${BBB_URL}$'\';' >> /var/www/moodle/html/local/defaults.php
+	echo $'$defaults[\'moodle\'][\'bigbluebuttonbn_shared_secret\'] = \''${BBB_SECRET}$'\';' >> /var/www/moodle/html/local/defaults.php
+	echo '' >> /var/www/moodle/html/local/defaults.php
+fi
+
 # Fix permissions
 chmod 740 /var/www/moodle/html/admin/cli/cron.php
 chown www-data:www-data -R /var/www/moodle/html
