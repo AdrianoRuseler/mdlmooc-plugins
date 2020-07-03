@@ -36,10 +36,12 @@ echo "Post - Core Config variables"
 moosh -n config-get core > /tmp/coreconfig.txt
 # coreconfig=$(echo $coreconfig | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g") # Hides db password
 cat /tmp/coreconfig.txt | sed -e "s/\[dbpass\] => [^[:space:]]*/\[dbpass\] => mysecretpass/g" > /tmp/coreconfig2.txt
-
 #coreconfig=$(echo $coreconfig | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g") # Hides smtp password
 cat /tmp/coreconfig2.txt | sed -e "s/\[smtppass\] => [^[:space:]]*/\[smtppass\] => mysecretpass/g" > /tmp/coreconfig3.txt
-coreconfig=$(cat /tmp/coreconfig3.txt)
+cat /tmp/coreconfig3.txt | sed -e "s/\[bigbluebuttonbn_shared_secret\] => [^[:space:]]*/\[bigbluebuttonbn_shared_secret\] => mysecretpass/g" > /tmp/coreconfig4.txt
+
+coreconfig=$(cat /tmp/coreconfig4.txt)
+rm -rf coreconfig.txt coreconfig1.txt coreconfig2.txt coreconfig3.txt coreconfig3.txt
 
 moosh -n forum-newdiscussion --subject "Moodle core config - Get core config variables." --message "<pre>$coreconfig</pre>" $courseid $forumid $userid
 

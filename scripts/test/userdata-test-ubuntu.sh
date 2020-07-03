@@ -138,16 +138,27 @@ psql --version
 echo "Install pwgen..."
 # https://www.2daygeek.com/5-ways-to-generate-a-random-strong-password-in-linux-terminal/
 apt install -y pwgen # Install pwgen
-PGPASS=$(pwgen -s 14 1) # Generates ramdon password for db user
+
+echo ""
+echo "##---------------------- GENERATES NEW DB -------------------------##"
+echo ""
+PGDBNAME=$(pwgen -s 10 -1 -v -A -0) # Generates ramdon db name
+PGDBUSER=$(pwgen -s 10 -1 -v -A -0) # Generates ramdon user name
+PGDBPASS=$(pwgen -s 14 1) # Generates ramdon password for db user
+echo "DB Name: $PGDBNAME"
+echo "DB User: $PGDBUSER"
+echo "DB Pass: $PGDBPASS"
+echo ""
 
 touch /tmp/createdbuser.sql
-echo 'CREATE DATABASE mdldb;' >> /tmp/createdbuser.sql
-echo $'CREATE USER moodle WITH PASSWORD \''${PGPASS}$'\';' >> /tmp/createdbuser.sql
-echo 'GRANT ALL PRIVILEGES ON DATABASE mdldb TO moodle;' >> /tmp/createdbuser.sql
+echo $'CREATE DATABASE '${PGDBNAME}$';' >> /tmp/createdbuser.sql
+echo $'CREATE USER '${PGDBUSER}$' WITH PASSWORD \''${PGDBPASS}$'\';' >> /tmp/createdbuser.sql
+echo $'GRANT ALL PRIVILEGES ON DATABASE '${PGDBNAME}$' TO '${PGDBUSER}$';' >> /tmp/createdbuser.sql
 cat /tmp/createdbuser.sql
 
 sudo -i -u postgres psql -f /tmp/createdbuser.sql
 rm /tmp/createdbuser.sql
+
 
 echo "#3 - Tools and dependencies for Moodle"
 
@@ -178,15 +189,20 @@ git clone --depth=1 --recursive https://github.com/AdrianoRuseler/mdlmooc-plugin
 # Merge and move moodle files
 rsync -a /var/www/moodle/git/core/ /tmp/moodle
 rsync -a /var/www/moodle/git/plugins/moodle/ /tmp/moodle
+rsync -a /var/www/moodle/git/plugins/climaintenance.html /mnt/mdl/data/climaintenance.html
+
 mv /tmp/moodle/* /var/www/moodle/html
 
 # Copy moodle config file
 cp /var/www/moodle/git/plugins/scripts/test/config-dist.php /var/www/moodle/html/config.php 
-sed -i 's/mydbpass/'"$PGPASS"'/' /var/www/moodle/html/config.php # Configure password
+sed -i 's/mydbname/'"$PGDBNAME"'/' /var/www/moodle/html/config.php # Configure password
+sed -i 's/mydbuser/'"$PGDBUSER"'/' /var/www/moodle/html/config.php # Configure password
+sed -i 's/mydbpass/'"$PGDBPASS"'/' /var/www/moodle/html/config.php # Configure password
 sed -i 's/mytesturl/https:\/\/'"$PUBHOST"'/' /var/www/moodle/html/config.php # Configure url
 
 cp /var/www/moodle/git/plugins/scripts/test/defaults-dist.php /var/www/moodle/html/local/defaults.php 
 sed -i 's/mytesturl/'"$PUBHOST"'/' /var/www/moodle/html/local/defaults.php 
+
 MDLADMPASS=$(pwgen -s 14 1) # Generates ramdon password for Moodle Admin
 sed -i 's/myadmpass/'"$MDLADMPASS"'/' /var/www/moodle/html/local/defaults.php # Set password in file
 
