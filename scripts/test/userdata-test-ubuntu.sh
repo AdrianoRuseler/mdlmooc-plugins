@@ -8,13 +8,12 @@ apt update && apt upgrade -yq
 echo "Autoremove and Autoclean System..."
 apt autoremove -yq && apt autoclean -yq
 
-echo "Set and Add locales pt_BR, en_US, es_ES, de_DE, fr_FR, pt_PT..."
+echo "Set and Add locales pt_BR, en_US, es_ES, de_DE, pt_PT..."
 sed -i '/^#.* pt_BR.* /s/^#//' /etc/locale.gen
 sed -i '/^#.* en_AU.* /s/^#//' /etc/locale.gen
 sed -i '/^#.* en_US.* /s/^#//' /etc/locale.gen
 sed -i '/^#.* es_ES.* /s/^#//' /etc/locale.gen
 sed -i '/^#.* de_DE.* /s/^#//' /etc/locale.gen
-sed -i '/^#.* fr_FR.* /s/^#//' /etc/locale.gen
 sed -i '/^#.* pt_PT.* /s/^#//' /etc/locale.gen
 locale-gen
 
@@ -72,8 +71,8 @@ if [[ -z "${ADM_EMAIL}" ]]; then # If variable is defined
   sed -i 's/webmaster@localhost/admin@fake.mail/' /etc/apache2/sites-available/moodle-ssl.conf
   sed -i 's/webmaster@localhost/admin@fake.mail/' /etc/apache2/sites-available/moodle.conf
 else
-  sed -i 's/webmaster@localhost/$ADM_EMAIL/' /etc/apache2/sites-available/moodle-ssl.conf
-  sed -i 's/webmaster@localhost/$ADM_EMAIL/' /etc/apache2/sites-available/moodle.conf
+  sed -i 's/webmaster@localhost/'"$ADM_EMAIL"'/' /etc/apache2/sites-available/moodle-ssl.conf
+  sed -i 's/webmaster@localhost/'"$ADM_EMAIL"'/' /etc/apache2/sites-available/moodle.conf
 fi
 
 sed -i 's/\/var\/www\/html/\/var\/www\/moodle\/html/' /etc/apache2/sites-available/moodle-ssl.conf
