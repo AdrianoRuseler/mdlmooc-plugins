@@ -199,12 +199,12 @@ sed -i 's/mydbuser/'"$PGDBUSER"'/' /var/www/moodle/html/config.php # Configure p
 sed -i 's/mydbpass/'"$PGDBPASS"'/' /var/www/moodle/html/config.php # Configure password
 sed -i 's/mytesturl/https:\/\/'"$PUBHOST"'/' /var/www/moodle/html/config.php # Configure url
 
+echo "Set defaults for Moodle..."
 cp /var/www/moodle/git/plugins/scripts/test/defaults-dist.php /var/www/moodle/html/local/defaults.php 
 sed -i 's/mytesturl/'"$PUBHOST"'/' /var/www/moodle/html/local/defaults.php 
 
 MDLADMPASS=$(pwgen -s 14 1) # Generates ramdon password for Moodle Admin
 sed -i 's/myadmpass/'"$MDLADMPASS"'/' /var/www/moodle/html/local/defaults.php # Set password in file
-
 
 # Set email sender
 if [[ -z "${SMTP_HOST}" ]]; then # If variable is defined
@@ -250,6 +250,6 @@ fi
 (crontab -l | grep . ; echo -e "*/1 * * * * /usr/bin/php  /var/www/moodle/html/admin/cli/cron.php >/dev/null\n") | crontab -
 
 # Install H5P content
-sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --execute='\core\task\h5p_get_content_types_task'
+# sudo -u www-data /usr/bin/php admin/tool/task/cli/schedule_task.php --execute='\core\task\h5p_get_content_types_task'
 
 
