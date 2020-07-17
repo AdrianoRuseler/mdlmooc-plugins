@@ -23,3 +23,14 @@ wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scr
 chmod u+x generatemooshreport.sh
 sudo ./generatemooshreport.sh
 ```
+
+## Reset Installation
+
+```bash
+#!/bin/bash
+
+# Reset Moodle - https://moodle.org
+wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scripts/test/moodle-reset.sh
+chmod u+x moodle-reset.sh
+sudo ./moodle-reset.sh
+```
