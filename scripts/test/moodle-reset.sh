@@ -18,6 +18,7 @@ echo "Make database backup..."
 sudo -i -u postgres pg_dump $mdldbname | gzip > $DB_BKP$filename.psql.gz
 md5sum $DB_BKP$filename.psql.gz > $DB_BKP$filename.psql.gz.md5
 md5sum -c $DB_BKP$filename.psql.gz.md5
+ls -lh $DB_BKP # list folder content
 
 echo "Drop database..."
 sudo -i -u postgres dropdb $mdldbname
@@ -28,16 +29,18 @@ echo $'GRANT ALL PRIVILEGES ON DATABASE '${mdldbname}$' TO '${mdldbuser}$';' >> 
 cat /tmp/createdb$mdldbname.sql
 echo ""
 
+echo "Create DB and grant user acess..."
 sudo -i -u postgres psql -f /tmp/createdb$mdldbname.sql
-# rm /tmp/createdb$mdldbname.sql
+rm /tmp/createdb$mdldbname.sql
 
 
 # MOODLE_DATA="/mnt/mdl/data"  # moodle data folder
 
-echo "Make Moodle DB backup..."
+echo "Make Moodle Data backup..."
 tar -czf $DATA_BKP$filename.tar.gz $MOODLE_DATA
 md5sum $DATA_BKP$filename.tar.gz > $DATA_BKP$filename.tar.gz.md5
 md5sum -c $DATA_BKP$filename.tar.gz.md5
+ls -lh $DATA_BKP # list folder content
 
 echo "Remove Moodle DB..."
 rm -rf $MOODLE_DATA
@@ -46,7 +49,7 @@ chown www-data:www-data -R $MOODLE_DATA
 
 
 mdlver=$(cat $MOODLE_HOME/version.php | grep '$release' | cut -d\' -f 2) # Gets Moodle Version
-MDLADMPASS=$(pwgen -s 14 1) # Generates ramdon password for Moodle Admin
+MDLADMPASS=$(pwgen -s 14 1) # Generates new ramdon password for Moodle Admin
 
 echo "Remove defaults..."
 rm $MOODLE_HOME/local/defaults.php
