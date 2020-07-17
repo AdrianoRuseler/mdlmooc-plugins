@@ -28,23 +28,23 @@ filename=$(date +\%Y-\%m-\%d-\%H.\%M) # Generates filename
 # make database backup
 mdldbname=$(cat $MOODLE_HOME/config.php | grep '$CFG->dbname' | cut -d\' -f 2) # Gets Moodle DB Name
 
-sudo -i -u postgres pg_dump $mdldbname > $DB_BKP$filename.$mdldbname.sql
-md5sum $DB_BKP$filename.$mdldbname.sql > $DB_BKP$filename.$mdldbname.sql.md5
-md5sum -c $DB_BKP$filename.$mdldbname.sql.md5
+# sudo -i -u postgres pg_dump $mdldbname > $DB_BKP$filename.$mdldbname.sql
+# md5sum $DB_BKP$filename.$mdldbname.sql > $DB_BKP$filename.$mdldbname.sql.md5
+# md5sum -c $DB_BKP$filename.$mdldbname.sql.md5
 
 sudo -i -u postgres pg_dump $mdldbname | gzip > $DB_BKP$filename.psql.gz
 md5sum $DB_BKP$filename.psql.gz > $DB_BKP$filename.psql.gz.md5
 md5sum -c $DB_BKP$filename.psql.gz.md5
 
 # Backup the files using tar.
-tar -czf $DB_BKP$filename.tar.gz $MOODLE_DB
-md5sum $DB_BKP$filename.tar.gz > $DB_BKP$filename.tar.gz.md5
-md5sum -c $DB_BKP$filename.tar.gz.md5
+# tar -czf $DB_BKP$filename.tar.gz $MOODLE_DB
+# md5sum $DB_BKP$filename.tar.gz > $DB_BKP$filename.tar.gz.md5
+# md5sum -c $DB_BKP$filename.tar.gz.md5
 
 # Backup the files using tar.
-tar -czf $HTML_BKP$filename.tar.gz $MOODLE_HOME
-md5sum $HTML_BKP$filename.tar.gz > $HTML_BKP$filename.tar.gz.md5
-md5sum -c $HTML_BKP$filename.tar.gz.md5
+# tar -czf $HTML_BKP$filename.tar.gz $MOODLE_HOME
+# md5sum $HTML_BKP$filename.tar.gz > $HTML_BKP$filename.tar.gz.md5
+# md5sum -c $HTML_BKP$filename.tar.gz.md5
 
 # Backup the files using tar.
 tar -czf $DATA_BKP$filename.tar.gz $MOODLE_DATA
