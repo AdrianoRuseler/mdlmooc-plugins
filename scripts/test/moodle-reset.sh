@@ -88,9 +88,9 @@ fi
 
 #Install moodle database
 if [[ -z "${ADM_EMAIL}" ]]; then # If variable is defined
-  sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=admin@fake.mail --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
+  sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=admin@fake.mail --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
 else
-  sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=$ADM_EMAIL --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
+  sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=$ADM_EMAIL --fullname="Moodle $mdlver" --shortname="Moodle $mdlver"
 fi
 
 
