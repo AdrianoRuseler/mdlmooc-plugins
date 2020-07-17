@@ -26,12 +26,13 @@ sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/fix_course_sequence.php -c=
 filename=$(date +\%Y-\%m-\%d-\%H.\%M) # Generates filename
 
 # make database backup
+mdldbname=$(cat $MOODLE_HOME/config.php | grep '$CFG->dbname' | cut -d\' -f 2) # Gets Moodle DB Name
 
-sudo -i -u postgres pg_dump mdldb > $DB_BKP$filename.mdldb.sql
-md5sum $DB_BKP$filename.mdldb.sql > $DB_BKP$filename.mdldb.sql.md5
-md5sum -c $DB_BKP$filename.mdldb.sql.md5
+sudo -i -u postgres pg_dump $mdldbname > $DB_BKP$filename.$mdldbname.sql
+md5sum $DB_BKP$filename.$mdldbname.sql > $DB_BKP$filename.$mdldbname.sql.md5
+md5sum -c $DB_BKP$filename.$mdldbname.sql.md5
 
-sudo -i -u postgres pg_dump mdldb | gzip > $DB_BKP$filename.psql.gz
+sudo -i -u postgres pg_dump $mdldbname | gzip > $DB_BKP$filename.psql.gz
 md5sum $DB_BKP$filename.psql.gz > $DB_BKP$filename.psql.gz.md5
 md5sum -c $DB_BKP$filename.psql.gz.md5
 
