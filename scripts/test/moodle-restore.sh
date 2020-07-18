@@ -42,10 +42,10 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-
 echo "Get latest DB backup files.."
 dbmd5file=$(ls -t $DB_BKP | head -2 | grep -e '\bmd5$')
 dbgzfile=$(ls -t $DB_BKP | head -2 | grep -e '\bgz$')
+echo "Db file to restore: $DB_BKP$dbgzfile"
 
 md5sum -c $DB_BKP$dbmd5file # Check DB file
 if [[ $? -ne 0 ]]; then
@@ -57,6 +57,7 @@ fi
 echo "Get latest Data backup files.."
 datamd5file=$(ls -t $DATA_BKP | head -2 | grep -e '\bmd5$')
 datagzfile=$(ls -t $DATA_BKP | head -2 | grep -e '\bgz$')
+echo "Data file to restore: $DATA_BKP$datagzfile"
 
 md5sum -c $DATA_BKP$datamd5file # Check data file
 if [[ $? -ne 0 ]]; then
@@ -101,6 +102,21 @@ rm -rf $MOODLE_DATA
 mkdir $MOODLE_DATA
 tar xvzf $DATA_BKP$datagzfile -C $MOODLE_DATA
 chown www-data:www-data -R $MOODLE_DATA
+
+echo "purge Moodle cache..."
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/purge_caches.php
+
+echo "fix courses..."
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/fix_course_sequence.php -c=* --fix
+
+echo "Execute some cleanup tasks..."
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\logstore_standard\task\cleanup_task'
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core_files\task\conversion_cleanup_task'
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\cache_cleanup_task'
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\file_temp_cleanup_task'
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\session_cleanup_task'
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\tool_recyclebin\task\cleanup_category_bin'
+sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\tool_recyclebin\task\cleanup_course_bin'
 
 echo "disable the maintenance mode..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/maintenance.php --disable
