@@ -34,3 +34,15 @@ wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scr
 chmod u+x moodle-reset.sh
 sudo ./moodle-reset.sh
 ```
+
+
+## Restore Installation
+
+```bash
+#!/bin/bash
+
+# Restore Moodle - https://moodle.org
+wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scripts/test/moodle-restore.sh
+chmod u+x moodle-restore.sh
+sudo ./moodle-restore.sh
+```
