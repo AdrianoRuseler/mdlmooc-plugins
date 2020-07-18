@@ -100,7 +100,7 @@ rm /tmp/restoreme.sql
 echo "Remove Moodle DB..."
 rm -rf $MOODLE_DATA
 mkdir $MOODLE_DATA
-tar xvzf $DATA_BKP$datagzfile -C $MOODLE_DATA
+tar xvzf $DATA_BKP$datagzfile #-C $MOODLE_DATA
 chown www-data:www-data -R $MOODLE_DATA
 
 echo "purge Moodle cache..."
