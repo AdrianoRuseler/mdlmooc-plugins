@@ -16,10 +16,10 @@ sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/kill_all_sessions.php
 echo "Activating Moodle Maintenance Mode in..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/maintenance.php --enable
 
-echo "purge Moodle cache..."
+echo "Purge Moodle cache..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/purge_caches.php
 
-echo "fix courses..."
+echo "Fix courses..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/fix_course_sequence.php -c=* --fix
 
 
@@ -51,7 +51,7 @@ tar -czf $DATA_BKP$filename.tar.gz $MOODLE_DATA
 md5sum $DATA_BKP$filename.tar.gz > $DATA_BKP$filename.tar.gz.md5
 md5sum -c $DATA_BKP$filename.tar.gz.md5
 
-ls -lh $DATA_BKP
+ls -lh -t $DATA_BKP
 
 echo "disable the maintenance mode..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/maintenance.php --disable
