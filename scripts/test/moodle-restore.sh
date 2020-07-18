@@ -4,22 +4,66 @@ DB_BKP="/mnt/mdl/bkp/db/" # moodle database backup folder
 DATA_BKP="/mnt/mdl/bkp/data/" # moodle data backup folder
 MOODLE_DATA="/mnt/mdl/data"  # moodle data folder
 MOODLE_DB="/mnt/mdl/db/data"  # moodle database folder
+MOODLE_HOME="/var/www/moodle/html" # moodle core folder
+
+echo ""
+echo "##----------------------- FOLDER CHECK ------------------------##"
+
+echo "Check if Moodle Home folder exists..."
+if [ -d "$MOODLE_HOME" ]; then
+  ### Take action if $MOODLE_HOME exists ###
+  echo "Found Moodle Home folder: ${MOODLE_HOME}"
+else
+  ###  Control will jump here if $DIR does NOT exists ###
+  echo "Error: ${MOODLE_HOME} not found. Can not continue!"
+  echo "Is ${MOODLE_HOME} your Moodle Home directory?"
+  echo "##------------------------ FAIL -------------------------##"
+  exit 1
+fi
+
+echo "Check if Moodle Data folder exists..."
+if [ -d "$MOODLE_DATA" ]; then
+  ### Take action if $MOODLE_DATA exists ###
+  echo "Found Moodle Data folder: ${MOODLE_DATA}"
+else
+  ###  Control will jump here if $DIR does NOT exists ###
+  echo "Error: ${MOODLE_DATA} not found. Can not continue!"
+  echo "Is ${MOODLE_DATA} your Moodle Data directory?"
+  echo "##------------------------ FAIL -------------------------##"
+  exit 1
+fi
 
 echo "Activating Moodle Maintenance Mode in..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/maintenance.php --enable
+if [[ $? -ne 0 ]]; then
+  echo "Error: Activating Moodle Maintenance Mode!"
+  rm -rf $TMP_DIR/moodle
+  echo "##------------------------ FAIL -------------------------##"
+  exit 1
+fi
+
 
 echo "Get latest DB backup files.."
 dbmd5file=$(ls -t $DB_BKP | head -2 | grep -e '\bmd5$')
 dbgzfile=$(ls -t $DB_BKP | head -2 | grep -e '\bgz$')
 
 md5sum -c $DB_BKP$dbmd5file # Check DB file
+if [[ $? -ne 0 ]]; then
+  echo "Error: Check DB file!"
+  echo "##------------------------ FAIL -------------------------##"
+  exit 1
+fi
 
 echo "Get latest Data backup files.."
 datamd5file=$(ls -t $DATA_BKP | head -2 | grep -e '\bmd5$')
 datagzfile=$(ls -t $DATA_BKP | head -2 | grep -e '\bgz$')
 
 md5sum -c $DATA_BKP$datamd5file # Check data file
-
+if [[ $? -ne 0 ]]; then
+  echo "Error: Check data file!"
+  echo "##------------------------ FAIL -------------------------##"
+  exit 1
+fi
 
 filename=$(date +\%Y-\%m-\%d-\%H.\%M) # Generates filename
 
