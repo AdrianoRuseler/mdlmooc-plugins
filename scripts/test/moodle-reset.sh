@@ -6,6 +6,7 @@ HTML_BKP="/mnt/mdl/bkp/html/" # moodle html backup folder
 MOODLE_DATA="/mnt/mdl/data"  # moodle data folder
 MOODLE_DB="/mnt/mdl/db/data"  # moodle database folder
 MOODLE_HOME="/var/www/moodle/html" # moodle core folder
+TMP_DIR="/mnt/mdl/tmp" # Temp folder
 
 filename=$(date +\%Y-\%m-\%d-\%H.\%M) # Generates filename
 
@@ -23,24 +24,27 @@ ls -lh $DB_BKP # list folder content
 echo "Drop database..."
 sudo -i -u postgres dropdb $mdldbname
 
-touch /tmp/createdb$mdldbname.sql
-echo $'CREATE DATABASE '${mdldbname}$';' >> /tmp/createdb$mdldbname.sql
-echo $'GRANT ALL PRIVILEGES ON DATABASE '${mdldbname}$' TO '${mdldbuser}$';' >> /tmp/createdb$mdldbname.sql
-cat /tmp/createdb$mdldbname.sql
+echo "Create DB and grant user acess..."
+mkdir -p $TMP_DIR # Creates temp dir
+touch $TMP_DIR/createdb$mdldbname.sql
+echo $'CREATE DATABASE '${mdldbname}$';' >> $TMP_DIR/createdb$mdldbname.sql
+echo $'GRANT ALL PRIVILEGES ON DATABASE '${mdldbname}$' TO '${mdldbuser}$';' >> $TMP_DIR/createdb$mdldbname.sql
+cat $TMP_DIR/createdb$mdldbname.sql
 echo ""
 
-echo "Create DB and grant user acess..."
-sudo -i -u postgres psql -f /tmp/createdb$mdldbname.sql
-rm /tmp/createdb$mdldbname.sql
+sudo -i -u postgres psql -f $TMP_DIR/createdb$mdldbname.sql
+rm $TMP_DIR/createdb$mdldbname.sql
 
 
 # MOODLE_DATA="/mnt/mdl/data"  # moodle data folder
 
+# Backup the files using tar.
 echo "Make Moodle Data backup..."
-tar -czf $DATA_BKP$filename.tar.gz $MOODLE_DATA
+tar -C $MOODLE_DATA -czf $DATA_BKP$filename.tar.gz cache filedir lang localcache muc temp trashdir
 md5sum $DATA_BKP$filename.tar.gz > $DATA_BKP$filename.tar.gz.md5
 md5sum -c $DATA_BKP$filename.tar.gz.md5
-ls -lh $DATA_BKP # list folder content
+
+ls -lh -t $DATA_BKP # list folder content
 
 echo "Remove Moodle DB..."
 rm -rf $MOODLE_DATA
