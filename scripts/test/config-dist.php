@@ -19,7 +19,7 @@ $CFG->dboptions = array (
 
 $CFG->wwwroot   = 'mytesturl';
 $CFG->dataroot  = '/mnt/mdl/data';
-$CFG->admin     = 'mdladmin';
+$CFG->admin     = 'admin';
 
 $CFG->allowthemechangeonurl = true;
 
