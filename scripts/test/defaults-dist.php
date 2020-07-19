@@ -10,7 +10,7 @@ $defaults['moodle']['custommenuitems'] = 'Tema
 -Fordson | https://mytesturl/?theme=fordson
 -Klass | https://mytesturl/?theme=klass
 -Moove | https://mytesturl/?theme=moove
-Solicitação de curso | https://mytesturl/course/request.php
+Criação de curso | https://mytesturl/course/request.php
 ';
 
 $defaults['moodle']['timezone'] = 'America/Sao_Paulo';
@@ -23,7 +23,7 @@ $defaults['moodle']['pathtogs'] = '/usr/bin/gs';
 $defaults['moodle']['pathtodot'] = '/usr/bin/dot';
 $defaults['moodle']['pathtopython'] = '/usr/bin/python3';
 
-$defaults['moodle']['auth_instructions'] = 'Usuário: admin
+$defaults['moodle']['auth_instructions'] = 'Usuário: mdladmin
 Senha: myadmpass';
 $defaults['moodle']['forcelogin'] = 1;
 
