@@ -47,7 +47,7 @@ md5sum -c $DB_BKP$filename.psql.gz.md5
 # md5sum -c $HTML_BKP$filename.tar.gz.md5
 
 # Backup the files using tar.
-tar -czf $DATA_BKP$filename.tar.gz $MOODLE_DATA
+tar -C $MOODLE_DATA -czf $DATA_BKP$filename.tar.gz cache filedir lang localcache muc temp trashdir
 md5sum $DATA_BKP$filename.tar.gz > $DATA_BKP$filename.tar.gz.md5
 md5sum -c $DATA_BKP$filename.tar.gz.md5
 
