@@ -5,6 +5,7 @@ DATA_BKP="/mnt/mdl/bkp/data/" # moodle data backup folder
 MOODLE_DATA="/mnt/mdl/data"  # moodle data folder
 MOODLE_DB="/mnt/mdl/db/data"  # moodle database folder
 MOODLE_HOME="/var/www/moodle/html" # moodle core folder
+TMP_DIR="/mnt/mdl/tmp" # Restore temp folder
 
 echo ""
 echo "##----------------------- FOLDER CHECK ------------------------##"
@@ -37,7 +38,6 @@ echo "Activating Moodle Maintenance Mode in..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/maintenance.php --enable
 if [[ $? -ne 0 ]]; then
   echo "Error: Activating Moodle Maintenance Mode!"
-  rm -rf $TMP_DIR/moodle
   echo "##------------------------ FAIL -------------------------##"
   exit 1
 fi
@@ -82,25 +82,27 @@ ls -lh $DB_BKP # list folder content
 echo "Drop database..."
 sudo -i -u postgres dropdb $mdldbname
 
-touch /tmp/createdb$mdldbname.sql
-echo $'CREATE DATABASE '${mdldbname}$';' >> /tmp/createdb$mdldbname.sql
-echo $'GRANT ALL PRIVILEGES ON DATABASE '${mdldbname}$' TO '${mdldbuser}$';' >> /tmp/createdb$mdldbname.sql
-cat /tmp/createdb$mdldbname.sql
+echo "Create DB and grant user acess..."
+mkdir -p $TMP_DIR # Creates temp dir
+touch $TMP_DIR/createdb$mdldbname.sql
+echo $'CREATE DATABASE '${mdldbname}$';' >> $TMP_DIR/createdb$mdldbname.sql
+echo $'GRANT ALL PRIVILEGES ON DATABASE '${mdldbname}$' TO '${mdldbuser}$';' >> $TMP_DIR/createdb$mdldbname.sql
+cat $TMP_DIR/createdb$mdldbname.sql
 echo ""
 
-echo "Create DB and grant user acess..."
-sudo -i -u postgres psql -f /tmp/createdb$mdldbname.sql
-rm /tmp/createdb$mdldbname.sql
+sudo -i -u postgres psql -f $TMP_DIR/createdb$mdldbname.sql
+rm $TMP_DIR/createdb$mdldbname.sql
 
 echo "Restore database..."
-gunzip -c $DB_BKP$dbgzfile > /tmp/restoreme.sql
-sudo -i -u postgres psql -d $mdldbname -f /tmp/restoreme.sql
-rm /tmp/restoreme.sql
+gunzip -c $DB_BKP$dbgzfile > $TMP_DIR/restoreme.sql
+sudo -i -u postgres psql -d $mdldbname -f $TMP_DIR/restoreme.sql
+rm $TMP_DIR/restoreme.sql
 
 echo "Remove Moodle DB..."
 rm -rf $MOODLE_DATA
 mkdir $MOODLE_DATA
-tar xvzf $DATA_BKP$datagzfile #-C $MOODLE_DATA
+tar xvzf $DATA_BKP$datagzfile -C $MOODLE_DATA
+
 chown www-data:www-data -R $MOODLE_DATA
 
 echo "purge Moodle cache..."
@@ -109,14 +111,14 @@ sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/purge_caches.php
 echo "fix courses..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/fix_course_sequence.php -c=* --fix
 
-echo "Execute some cleanup tasks..."
-sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\logstore_standard\task\cleanup_task'
-sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core_files\task\conversion_cleanup_task'
-sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\cache_cleanup_task'
-sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\file_temp_cleanup_task'
-sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\session_cleanup_task'
-sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\tool_recyclebin\task\cleanup_category_bin'
-sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\tool_recyclebin\task\cleanup_course_bin'
+#echo "Execute some cleanup tasks..."
+#sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\logstore_standard\task\cleanup_task'
+#sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core_files\task\conversion_cleanup_task'
+#sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\cache_cleanup_task'
+#sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\file_temp_cleanup_task'
+#sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\core\task\session_cleanup_task'
+#sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\tool_recyclebin\task\cleanup_category_bin'
+#sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/tool/task/cli/schedule_task.php --execute='\tool_recyclebin\task\cleanup_course_bin'
 
 echo "disable the maintenance mode..."
 sudo -u www-data /usr/bin/php $MOODLE_HOME/admin/cli/maintenance.php --disable
