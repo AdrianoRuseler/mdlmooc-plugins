@@ -19,7 +19,7 @@ $CFG->dboptions = array (
 
 $CFG->wwwroot   = 'mytesturl';
 $CFG->dataroot  = '/mnt/mdl/data';
-$CFG->admin     = 'admin';
+$CFG->admin     = 'mdladmin';
 
 $CFG->allowthemechangeonurl = true;
 
@@ -27,10 +27,10 @@ $CFG->allowthemechangeonurl = true;
 // (new plugins, available updates and missing dependencies) and related
 // features (such as cancelling the plugin installation or upgrade) via the
 // server administration web interface.
-//$CFG->disableupdateautodeploy = true;
+$CFG->disableupdateautodeploy = true;
 
 // Disabling update notifications
-//$CFG->disableupdatenotifications = true;
+$CFG->disableupdatenotifications = true;
 
 $CFG->directorypermissions = 0777;
 
