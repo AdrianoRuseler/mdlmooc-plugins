@@ -164,12 +164,13 @@ git clone --depth=1 --branch=MOODLE_311_STABLE https://github.com/moodle/moodle.
 
 # Merge and move moodle files
 rsync -a /var/www/moodle/git/core/ /tmp/moodle
-rsync -a /var/www/moodle/git/plugins/climaintenance.html /mnt/mdl/data/climaintenance.html
+# rsync -a /var/www/moodle/git/plugins/climaintenance.html /mnt/mdl/data/climaintenance.html
 
 mv /tmp/moodle/* /var/www/moodle/html
 
 # Copy moodle config file
-cp /var/www/moodle/git/plugins/scripts/test/config-dist.php /var/www/moodle/html/config.php 
+wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scripts/test/config-dist.php -O config-dist.php
+cp config-dist.php /var/www/moodle/html/config.php 
 sed -i 's/mydbname/'"$PGDBNAME"'/' /var/www/moodle/html/config.php # Configure password
 sed -i 's/mydbuser/'"$PGDBUSER"'/' /var/www/moodle/html/config.php # Configure password
 sed -i 's/mydbpass/'"$PGDBPASS"'/' /var/www/moodle/html/config.php # Configure password
@@ -193,7 +194,7 @@ mdlver=$(cat version.php | grep '$release' | cut -d\' -f 2) # Gets Moodle Versio
 
 #Install moodle database
 if [[ -z "${ADM_EMAIL}" ]]; then # If variable is defined
-  sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=admin@fake.mail --fullname="Moodle QA $mdlver" --shortname="Moodle QA $mdlver"
+  sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=admin@qa.mail --fullname="Moodle QA $mdlver" --shortname="Moodle QA $mdlver"
 else
   sudo -u www-data /usr/bin/php admin/cli/install_database.php --lang=pt_br --adminpass=$MDLADMPASS --agree-license --adminemail=$ADM_EMAIL --fullname="Moodle QA $mdlver" --shortname="Moodle QA $mdlver"
 fi
