@@ -110,16 +110,16 @@ moodlebkpinfo1=$(ls -lh $BKP_DIR)
 moodlebkpinfo2=$(du -h --max-depth=1 $BKP_DIR)
 
 moosh -n forum-newdiscussion --subject "Moodle Backup info" --message "<hr><pre>$moodlebkpinfo1</pre><hr><pre>$moodlebkpinfo2</pre>" $courseid $forumid $userid 
- 
- 
+  
 echo "Post - System info"
 sysinfo=$(uname -a) # Gets system info
 diskinfo=$(df -H) # Gets disk usage info 
+topreport=$(top -b -n 1)
 httpdver=$(apachectl -V)
 mysqlver=$(psql -V)
 phpversion=$(php -v)
 
-moosh -n forum-newdiscussion --subject "System info" --message "<hr><pre>$sysinfo</pre><hr><br><pre>$diskinfo</pre><hr><br><pre>$httpdver</pre><hr><br><pre>$mysqlver</pre><hr><br><pre>$phpversion</pre>" $courseid $forumid $userid
+moosh -n forum-newdiscussion --subject "System info" --message "<hr><pre>$sysinfo</pre><hr><br><pre>$diskinfo</pre><hr><br><pre>$topreport</pre><hr><br><pre>$httpdver</pre><hr><br><pre>$mysqlver</pre><hr><br><pre>$phpversion</pre>" $courseid $forumid $userid
 
 echo "Post - List of scheduled tasks"
 # List of scheduled tasks 
