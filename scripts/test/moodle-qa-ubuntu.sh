@@ -167,7 +167,9 @@ sed -i 's/mydbpass/'"$PGDBPASS"'/' /var/www/moodle/html/config.php # Configure p
 sed -i 's/mytesturl/https:\/\/'"$PUBHOST"'/' /var/www/moodle/html/config.php # Configure url
 
 echo "Set defaults for Moodle..."
-cp /var/www/moodle/git/plugins/scripts/test/defaults-dist.php /var/www/moodle/html/local/defaults.php 
+
+wget https://raw.githubusercontent.com/AdrianoRuseler/mdlmooc-plugins/master/scripts/test/qa-defaults-dist.php -O defaults-dist.php
+cp defaults-dist.php /var/www/moodle/html/local/defaults.php 
 sed -i 's/mytesturl/'"$PUBHOST"'/' /var/www/moodle/html/local/defaults.php 
 
 MDLADMPASS=$(pwgen -s 14 1) # Generates ramdon password for Moodle Admin
