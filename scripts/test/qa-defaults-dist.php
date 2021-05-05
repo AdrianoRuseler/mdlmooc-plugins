@@ -1,5 +1,10 @@
 <?php
 $defaults['moodle']['summary'] = 'Moodle QA Site! '; // for core settings
+$defaults['moodle']['custommenuitems'] = 'Tema
+-Boost | https://mytesturl/?theme=boost
+-Clássico | https://mytesturl/?theme=classic
+Criação de curso | https://mytesturl/course/request.php
+';
 
 $defaults['moodle']['timezone'] = 'America/Sao_Paulo';
 $defaults['moodle']['defaultcity'] = 'Curitiba';
