@@ -139,6 +139,9 @@ apt-get install -y aspell dictionaries-common libaspell15 aspell-en aspell-pt-br
 echo "To be able to generate graphics from DOT files, you must have installed the dot executable..."
 apt-get install -y graphviz imagemagick
 
+echo "pdftoppm is a tool that converts PDF pages to PNG at least as fast as 'gs' does."
+apt-get install -y poppler-utils
+
 export DEBIAN_FRONTEND=noninteractive
 apt-get update && apt-get upgrade -yq
 
