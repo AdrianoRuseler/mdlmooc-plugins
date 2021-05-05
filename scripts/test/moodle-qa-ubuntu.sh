@@ -3,10 +3,10 @@
 # cat /var/log/cloud-init-output.log
 echo "#1 - Initial system setup"
 export DEBIAN_FRONTEND=noninteractive
-apt update && apt upgrade -yq
+apt-get update && apt-get upgrade -yq
 
 echo "Autoremove and Autoclean System..."
-apt autoremove -yq && apt autoclean -yq
+apt-get autoremove -yq && apt-get autoclean -yq
 
 echo "Set and Add locales pt_BR, en_US..."
 sed -i '/^#.* pt_BR.* /s/^#//' /etc/locale.gen
@@ -39,7 +39,7 @@ echo "#1 - Web server and dependencies setup"
 PUBHOST=$(ec2metadata --public-hostname | cut -d : -f 2 | tr -d " ")
 
 # Install web server
-apt install -y apache2
+apt-get install -y apache2
 a2enmod ssl rewrite headers deflate socache_shmcb
 systemctl restart apache2
 systemctl status apache2
@@ -57,15 +57,6 @@ cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/mo
 PUBHOST=$(ec2metadata --public-hostname | cut -d : -f 2 | tr -d " ")
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt -subj $"/C=BR/ST=PR/L=CWB/O=MDLTEST/CN='${PUBHOST}$'"
 
-# Set webmaster email
-if [[ -z "${ADM_EMAIL}" ]]; then # If variable is defined
-  sed -i 's/webmaster@localhost/admin@fake.mail/' /etc/apache2/sites-available/moodle-ssl.conf
-  sed -i 's/webmaster@localhost/admin@fake.mail/' /etc/apache2/sites-available/moodle.conf
-else
-  sed -i 's/webmaster@localhost/'"$ADM_EMAIL"'/' /etc/apache2/sites-available/moodle-ssl.conf
-  sed -i 's/webmaster@localhost/'"$ADM_EMAIL"'/' /etc/apache2/sites-available/moodle.conf
-fi
-
 sed -i 's/\/var\/www\/html/\/var\/www\/moodle\/html/' /etc/apache2/sites-available/moodle-ssl.conf
 sed -i 's/\/var\/www\/html/\/var\/www\/moodle\/html/' /etc/apache2/sites-available/moodle.conf
 sed -i 's/ssl-cert-snakeoil.pem/apache-selfsigned.crt/' /etc/apache2/sites-available/moodle-ssl.conf
@@ -74,13 +65,12 @@ sed -i 's/ssl-cert-snakeoil.key/apache-selfsigned.key/' /etc/apache2/sites-avail
 # Redirect http to https
 sed -i '/combined/a \\n\tRewriteEngine On \n\tRewriteCond %{HTTPS} off \n\tRewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}' /etc/apache2/sites-available/moodle.conf
 
-
 a2ensite moodle.conf moodle-ssl.conf # Enable sites
 a2dissite 000-default.conf default-ssl.conf # Disable sites
 systemctl reload apache2
 
 # Install php 
-apt install -y php php-curl php-cli php-pgsql php-gd php-soap php-intl php-xml php-mbstring php-xmlrpc php-zip php-ldap php-redis php-memcached php-apcu php-opcache
+apt-get install -y php php-curl php-cli php-pgsql php-gd php-soap php-intl php-xml php-mbstring php-xmlrpc php-zip php-ldap php-redis php-memcached php-apcu php-opcache
 
 # touch /var/www/moodle/html/index.php
 # echo '<?php phpinfo(); ?>' >> /var/www/moodle/html/index.php
@@ -93,7 +83,7 @@ systemctl reload apache2
 systemctl restart apache2
 
 # Install cache tools
-apt install -y redis memcached
+apt-get install -y redis memcached
 systemctl enable memcached
 systemctl start memcached
 systemctl start redis
@@ -103,7 +93,7 @@ systemctl status memcached
 systemctl status redis
 
 # Install db 
-apt install -y postgresql postgresql-contrib
+apt-get install -y postgresql postgresql-contrib
 sudo systemctl enable postgresql
 
 mkdir -p /mnt/mdl/db/data
@@ -114,7 +104,7 @@ psql --version
 
 echo "Install pwgen..."
 # https://www.2daygeek.com/5-ways-to-generate-a-random-strong-password-in-linux-terminal/
-apt install -y pwgen # Install pwgen
+apt-get install -y pwgen # Install pwgen
 
 echo ""
 echo "##---------------------- GENERATES NEW DB -------------------------##"
@@ -140,20 +130,20 @@ rm /tmp/createdbuser.sql
 echo "#3 - Tools and dependencies for Moodle"
 
 echo "Install Universal Office Converter..."
-apt install -y unoconv
+apt-get install -y unoconv
 chown www-data /var/www
 
 echo "To use spell-checking within the editor, you MUST have aspell 0.50 or later installed on your server..."
-apt install -y aspell dictionaries-common libaspell15 aspell-en aspell-pt-br aspell-doc spellutils
+apt-get install -y aspell dictionaries-common libaspell15 aspell-en aspell-pt-br aspell-doc spellutils
 
 echo "To be able to generate graphics from DOT files, you must have installed the dot executable..."
-apt install -y graphviz imagemagick
+apt-get install -y graphviz imagemagick
 
 export DEBIAN_FRONTEND=noninteractive
-apt update && apt upgrade -yq
+apt-get update && apt-get upgrade -yq
 
 echo "Autoremove and Autoclean System..."
-apt autoremove -yq && apt autoclean -yq
+apt-get autoremove -yq && apt-get autoclean -yq
 
 
 echo "#4 - Install moodle"
